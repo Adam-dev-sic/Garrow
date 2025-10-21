@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@plugin "@midudev/tailwind-animations";
+
+.task-button {
+  @apply px-6 py-3 w-40 rounded-lg text-black font-semibold bg-gradient-to-r from-[#6e6f6f] via-white to-[#282727] shadow-lg hover:from-black hover:cursor-pointer hover:via-white hover:to-black transition-all duration-300 xl:w-60;
+}
+
+.berserk-h1 {
+  @apply drop-shadow-[0_2px_8px_rgba(255,100,50,0.5)] bg-gradient-to-br from-[#d9332b] via-[#ed5828] to-[#fe9262]  bg-clip-text text-transparent;
+}
+
+.berserk-p {
+  @apply drop-shadow-[3px_3px_0_rgba(0,0,0,0.9)];
+}
+
+.berserk-button {
+  @apply bg-gradient-to-br from-[#d9332b] via-[#ed5828] to-[#fe9262] drop-shadow-[0_2px_8px_rgba(255,100,50,0.5)] focus:from-red-700 focus:font-bold focus:via-red-700 focus:to-red-900 active:bg-gradient-to-b hover:from-red-700 hover:via-red-700 hover:to-red-900 hover:bg-gradient-to-b hover:font-bold;
+}
+
+@keyframes border-spin {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 400% 50%;
+  }
+}
+
+.btn-glow {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px; /* border thickness */
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, #282727, transparent);
+  background-size: 400%;
+  animation: none;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.btn-glow:hover::before {
+  animation: border-spin 1.5s linear infinite;
+}
