@@ -14,7 +14,7 @@
 }
 
 .berserk-button {
-  @apply bg-gradient-to-br from-[#d9332b] via-[#ed5828] to-[#fe9262] drop-shadow-[0_2px_8px_rgba(255,100,50,0.5)] focus:from-red-700 focus:font-bold focus:via-red-700 focus:to-red-900 active:bg-gradient-to-b hover:from-red-700 hover:via-red-700 hover:to-red-900 hover:bg-gradient-to-b hover:font-bold;
+  @apply cursor-pointer bg-gradient-to-br  from-[#d9332b] via-[#ed5828] to-[#fe9262] drop-shadow-[0_2px_8px_rgba(255,100,50,0.5)] focus:from-red-700 focus:font-bold focus:via-red-700 focus:to-red-900 active:bg-gradient-to-b hover:from-red-700 hover:via-red-700 hover:to-red-900 hover:bg-gradient-to-b hover:font-bold;
 }
 
 @keyframes border-spin {

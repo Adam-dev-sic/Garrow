@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Tasks from "./views/Tasks";
 import Points from "./views/Points";
 import Login from "./views/Login";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -14,7 +15,9 @@ function App() {
   return (
     <>
       <Navbar />
-      <Points/>
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 }
