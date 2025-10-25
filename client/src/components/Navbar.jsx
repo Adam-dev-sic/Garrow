@@ -26,8 +26,8 @@ function Navbar() {
       </div>
 
       {/* Right section */}
-      <Link to={'/login'}>
-        <button className="cursor-pointer text-white hover:text-gray-300 absolute right-8 max-md:hidden">
+      <Link to={"/auth"}>
+        <button className="cursor-pointer text-white hover:text-gray-300 absolute bottom-10 right-8 max-md:hidden">
           Login
         </button>{" "}
       </Link>

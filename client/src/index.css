@@ -4,7 +4,53 @@
 .task-button {
   @apply px-6 py-3 w-40 rounded-lg text-black font-semibold bg-gradient-to-r from-[#6e6f6f] via-white to-[#282727] shadow-lg hover:from-black hover:cursor-pointer hover:via-white hover:to-black transition-all duration-300 xl:w-60;
 }
+.cool-button {
+  @apply px-6 py-3 w-40 rounded-xl font-semibold text-black 
+  bg-gradient-to-r from-[#808080] via-[#eaeaea] to-[#2e2e2e]
+  shadow-md hover:shadow-xl 
+  hover:from-[#111111] hover:via-[#ffffff] hover:to-[#111111] 
+  transition-all duration-300 ease-in-out
+  hover:scale-105 active:scale-95 xl:w-60;
+}
+.energy-button {
+  @apply px-6 py-3 w-40 rounded-lg text-white font-semibold
+  bg-gradient-to-r from-[#111111] via-[#3a3a3a] to-[#bdbdbd]
+  hover:from-[#bdbdbd] hover:via-[#3a3a3a] hover:to-[#111111]
+  shadow-lg hover:shadow-2xl hover:scale-105 
+  transition-all duration-300 ease-in-out xl:w-60;
+}
+.glass-button {
+  @apply px-6 py-3 w-40 rounded-lg font-semibold text-black
+  bg-gradient-to-br from-white/60 via-white/30 to-gray-200/40
+  backdrop-blur-md border border-white/40 shadow-md
+  hover:bg-gradient-to-tr hover:from-gray-300/70 hover:to-white/70
+  transition-all duration-300 ease-in-out hover:scale-105 xl:w-60;
+}
+.accent-button {
+  @apply px-6 py-3 w-40 rounded-lg text-white font-bold
+  bg-gradient-to-r from-[#ff512f] to-[#dd2476]
+  shadow-md hover:shadow-xl 
+  hover:from-[#dd2476] hover:to-[#ff512f]
+  hover:scale-105 active:scale-95 transition-all duration-300 xl:w-60;
+}
+.next-button {
+  @apply px-8 py-3 w-44 rounded-xl font-semibold text-black
+  bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0]
+  shadow-[0_0_15px_rgba(255,255,255,0.2)]
+  hover:from-[#ffffff] hover:via-[#cfcfcf] hover:to-[#8e8e8e]
+  transition-all duration-300 ease-in-out
+  hover:scale-105 active:scale-95 xl:w-60 relative overflow-hidden;
+}
 
+.next-button::after {
+  content: "→";
+  @apply absolute right-5 text-2xl opacity-0 translate-x-[-6px]
+  transition-all duration-300 text-black;
+}
+
+.next-button:hover::after {
+  @apply opacity-100 translate-x-[3px];
+}
 .berserk-h1 {
   @apply drop-shadow-[0_2px_8px_rgba(255,100,50,0.5)] bg-gradient-to-br from-[#d9332b] via-[#ed5828] to-[#fe9262]  bg-clip-text text-transparent;
 }
