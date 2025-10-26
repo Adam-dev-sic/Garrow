@@ -1,46 +1,85 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 
-function Linked({ type }) {
+function Linked({
+  type,
+  formLinkedPoints,
+  formLinksIds,
+  setFormLinksIds,
+  setFormLinkedPoints,
+}) {
   const { userData } = useUserStore();
- 
+
   const [weeklyProgress, setWeeklyProgress] = useState(false);
+  const [monthlyProgress, setMonthlyProgress] = useState(false);
+  const [yearlyProgress, setYearlyProgress] = useState(false);
+
+  useEffect(() => {
+    if (type === "daily") {
+      if (formLinksIds.weekly >= 1) {
+        setWeeklyProgress(true);
+      } else setWeeklyProgress(false);
+    } else if (type === "weekly") {
+      if (formLinksIds.monthly >= 1) {
+        setMonthlyProgress(true);
+      } else setMonthlyProgress(false);
+    } else {
+      if (formLinksIds.yearly >= 1) {
+        setYearlyProgress(true);
+      } else setYearlyProgress(false);
+    }
+  }, [formLinksIds]);
   return (
     <div>
-      {type === "daily" ? (
-        <>
+      <>
+        {type === "daily" ? (
           <div className="flex flex-col space-y-2 mb-5">
-            <h1 className="font-bold text-2xl">Weekly Goals</h1>
+            <h1 className="font-bold text-2xl">
+              Weekly Goals{" "}
+              <span>
+                <p className="opacity-80 text-xs">(optional)</p>
+              </span>
+            </h1>
             <select
               name=""
               id="weeklySelect"
-              className=""
+              className="border-2 border-white p-2 rounded-2xl"
+              value={formLinksIds.weekly}
               onChange={(e) => {
                 const selectedValue = e.target.value;
                 if (selectedValue !== "none") {
                   // Do something here when user selects a non-"None" option
 
                   // Example: call a function
-                  setWeeklyProgress(true);
-                } else setWeeklyProgress(false);
+
+                  setFormLinksIds({ ...formLinksIds, weekly: selectedValue });
+                } else {
+                  setFormLinksIds({ ...formLinksIds, weekly: "" });
+                }
               }}
             >
               <option value="none">None</option>
               {userData.weeklies.map((weekly) => {
                 return (
-                  <option className="text-white text-lg" value={weekly.goal}>
+                  <option
+                    key={weekly.id}
+                    className="text-white text-lg"
+                    value={weekly.id}
+                  >
                     {weekly.goal}
                   </option>
                 );
               })}
             </select>
             <div
-              className={`flex items-center mt-5 mb-3 space-x-3 ${
+              className={`flex items-center mt-2 space-x-4 ${
                 weeklyProgress ? "!flex" : "!hidden"
               }`}
             >
-              <h1>Progress</h1>
+              <h1>Progress (%)</h1>
               <input
+                value={formLinkedPoints} // controlled input
+                onChange={(e) => setFormLinkedPoints(e.target.value)}
                 type="text"
                 className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
                      font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2 
@@ -48,66 +87,125 @@ function Linked({ type }) {
               />
             </div>
           </div>
+        ) : (
+          ""
+        )}
+        {type === "daily" || type === "weekly" ? (
           <div className="flex flex-col space-y-2 mb-5">
-            <h1 className="font-bold text-2xl">Monthly Goals</h1>
-            <select name="" id="Monthlies" className="">
+            <h1 className="font-bold text-2xl">
+              Monthly Goals{" "}
+              <span>
+                <p className="opacity-80 text-xs">(optional)</p>
+              </span>
+            </h1>
+            <select
+              className="border-2 border-white p-2 rounded-2xl"
+              name=""
+              id="Monthlies"
+              value={formLinksIds.monthly}
+              onChange={(e) => {
+                const selectedValue = e.target.value;
+                if (selectedValue !== "none") {
+                  // Do something here when user selects a non-"None" option
+
+                  // Example: call a function
+
+                  setFormLinksIds({
+                    ...formLinksIds,
+                    monthly: selectedValue,
+                  });
+                } else setFormLinksIds({ ...formLinksIds, monthly: "" });
+              }}
+            >
               <option value="none">None</option>
               {userData.monthlies.map((monthly) => {
                 return (
-                  <option className="text-white text-lg" value={monthly.goal}>
+                  <option
+                    key={monthly.id}
+                    className="text-white text-lg"
+                    value={monthly.id}
+                  >
                     {monthly.goal}
                   </option>
                 );
               })}
             </select>
-            {/* <div
-            className={`flex items-center mt-5 space-x-3 ${
-              weeklyProgress ? "!flex" : "!hidden"
-            }`}
-          >
-            <h1>Progress</h1>
-            <input
-              type="text"
-              className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
-                     font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2 
-                     }`}
-            />
-          </div> */}
-          </div>{" "}
+            <div
+              className={`flex items-center mt-5 space-x-3 ${
+                monthlyProgress ? "!flex" : "!hidden"
+              }`}
+            >
+              <h1>Progress (%)</h1>
+              <input
+                type="text"
+                value={formLinkedPoints} // controlled input
+                onChange={(e) => setFormLinkedPoints(e.target.value)}
+                className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
+                font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2 
+                }`}
+              />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        {type === "daily" || type === "weekly" || type === "monthly" ? (
           <div className="flex flex-col space-y-2 mb-5">
-            <h1 className="font-bold text-2xl">Year Goals</h1>
-            <select name="" id="weeklySelect" className="">
+            <h1 className="font-bold text-2xl">
+              Year Goals{" "}
+              <span>
+                <p className="opacity-80 text-xs">(optional)</p>
+              </span>
+            </h1>
+            <select
+              name=""
+              id="yearlySelect"
+              className="border-2 border-white p-2 rounded-2xl"
+              value={formLinksIds.yearly}
+              onChange={(e) => {
+                const selectedValue = e.target.value;
+                if (selectedValue !== "none") {
+                  // Do something here when user selects a non-"None" option
+
+                  // Example: call a function
+
+                  setFormLinksIds({ ...formLinksIds, yearly: selectedValue });
+                } else setFormLinksIds({ ...formLinksIds, yearly: "" });
+              }}
+            >
               <option value="none">None</option>
               {userData.yearlies.map((yearly) => {
                 return (
-                  <option className="text-white text-lg" value={yearly.goal}>
+                  <option
+                    key={yearly.id}
+                    className="text-white text-lg"
+                    value={yearly.id}
+                  >
                     {yearly.goal}
                   </option>
                 );
               })}
             </select>
-            {/* <div
-            className={`flex items-center mt-5 space-x-3 ${
-              weeklyProgress ? "!flex" : "!hidden"
-            }`}
-          >
-            <h1>Progress</h1>
-            <input
-              type="text"
-              className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
+            <div
+              className={`flex items-center mt-5 space-x-3 ${
+                yearlyProgress ? "!flex" : "!hidden"
+              }`}
+            >
+              <h1>Progress</h1>
+              <input
+                type="text"
+                value={formLinkedPoints} // controlled input
+                onChange={(e) => setFormLinkedPoints(e.target.value)}
+                className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
                      font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2 
                      }`}
-            />
-          </div> */}
+              />
+            </div>
           </div>
-        </>
-      ) : type === "weekly" ? (
-        <div>pablsdaasdo</div>
-      ) : type === "monthly" ? (
-        <div></div>
-      ) : (
-        type === "yearly"(<div></div>)
-      )}
+        ) : (
+          ""
+        )}
+      </>
     </div>
   );
 }

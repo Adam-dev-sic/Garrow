@@ -1,28 +1,133 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useUserStore } from "../store/useUserStore";
+import { useMediaQuery } from "react-responsive";
+import Linked from "./Linked";
+import TasksForm from "./TasksForm";
+import GoalsData from "./GoalsData";
 
-function Monthly({ monthlyOpen, setMonthlyOpen }) {
+export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
+  const [goal, setGoal] = useState(true);
+  const [linked, setLinked] = useState(false);
+  const [progression, setProgression] = useState(false);
+  const [point, setPoints] = useState(false);
+  const [formIsOpen, setFormIsOpen] = useState(false);
+  const [type, setType] = useState("monthly");
+  const { userData, fetchUserData, triggerRefetch, isLoading } = useUserStore();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
+  // Form inputs
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   return (
     <div
-      className="flex flex-col w-full   space-y-10 min-h-1/2 
-     max-h-4/5 overflow-y-auto  bg-[#020201] border-2 border-white overflow-auto rounded-2xl text-white  absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
+      className="flex flex-col w-full space-y-10 min-h-2/3 
+     max-h-4/5 overflow-y-auto overflow-x-auto bg-[#020201] border-2 border-white rounded-2xl text-white absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
     >
-      <div className="flex w-full text-center  justify-end">
+      <div className="flex w-full text-center justify-between">
+        <button
+          onClick={() => setFormIsOpen(!formIsOpen)}
+          className="task-button h-12 lg:!w-35"
+        >
+          {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
+        </button>
         <button
           onClick={() => setMonthlyOpen(!monthlyOpen)}
-          className="task-button lg:!w-30"
+          className="task-button h-12 lg:!w-35"
         >
           Close
         </button>
       </div>
-      <div className="flex justify-between overflow-x-auto  h-15 space-x-10 w-full border-b-2 border-b-white">
-        <h1 className="min-w-[50px]">Goal</h1>
-        <h1 className="min-w-[50px]">Linked with</h1>
-        <h1 className="min-w-[80px]">Progression Y</h1>
-        <h1 className="min-w-[50px]">Points</h1>
-        <h1 className="min-w-[50px]">Progress</h1>
-      </div>
+
+      {!formIsOpen ? (
+        <>
+          <div className="flex flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
+            <h1
+              onClick={() => {
+                setGoal(true);
+                setLinked(false);
+                setProgression(false);
+                setPoints(false);
+              }}
+              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
+                goal ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
+              }`}
+            >
+              Goal
+            </h1>
+            <h1
+              onClick={() => {
+                setGoal(false);
+                setLinked(true);
+                setProgression(false);
+                setPoints(false);
+              }}
+              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
+                linked ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
+              }`}
+            >
+              Linked with
+            </h1>
+            <h1
+              onClick={() => {
+                setGoal(false);
+                setLinked(false);
+                setProgression(true);
+                setPoints(false);
+              }}
+              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
+                progression
+                  ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                  : ""
+              }`}
+            >
+              Progression Y
+            </h1>
+            
+            <h1
+              onClick={() => {
+                setGoal(false);
+                setLinked(false);
+                setProgression(false);
+                setPoints(true);
+              }}
+              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
+                point ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
+              }`}
+            >
+              Points
+            </h1>
+          </div>
+
+       
+          <GoalsData
+            isLoading={isLoading}
+            userData={userData}
+            isMobile={isMobile}
+            goal={goal}
+            progression={progression}
+            point={point}
+            linked={linked}
+            type={type}
+          />
+        </>
+      ) : (
+        <TasksForm
+          setFormIsOpen={setFormIsOpen}
+          goal={goal}
+          point={point}
+          linked={linked}
+          progression={progression}
+          type={type}
+          isMobile={isMobile}
+          setGoal={setGoal}
+          setLinked={setLinked}
+          setProgression={setProgression}
+          setPoints={setPoints}
+        />
+      )}
     </div>
   );
 }
-
-export default Monthly;

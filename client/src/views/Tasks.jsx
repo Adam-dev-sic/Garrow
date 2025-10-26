@@ -3,10 +3,16 @@ import Daily from "../components/Daily";
 import Weekly from "../components/Weekly";
 import Monthly from "../components/Monthly";
 import Yearly from "../components/Yearly";
-
+import { useUserStore } from "../store/useUserStore";
 
 function ParticleBackground() {
   const canvasRef = useRef(null);
+  const { userData, retrigger, fetchUserData } = useUserStore();
+  
+
+  useEffect(() => {
+    fetchUserData();
+  }, [retrigger]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -64,7 +70,7 @@ function Tasks() {
 
   return (
     <div className="relative @container bg-[url('/images/wallpaperflare.com_wallpaper.jpg')] bg-cover bg-no-repeat bg-center h-screen flex flex-col space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
-     <ParticleBackground/>
+      <ParticleBackground />
       <div className="flex space-x-10 mt-40 items-center justify-center xl:m-0 xl:mr-80">
         <button
           onClick={() => {

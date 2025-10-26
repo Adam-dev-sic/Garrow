@@ -4,7 +4,7 @@
 .task-button {
   @apply px-6 py-3 w-40 rounded-lg text-black font-semibold bg-gradient-to-r from-[#6e6f6f] via-white to-[#282727] shadow-lg hover:from-black hover:cursor-pointer hover:via-white hover:to-black transition-all duration-300 xl:w-60;
 }
-.cool-button {
+/* .cool-button {
   @apply px-6 py-3 w-40 rounded-xl font-semibold text-black 
   bg-gradient-to-r from-[#808080] via-[#eaeaea] to-[#2e2e2e]
   shadow-md hover:shadow-xl 
@@ -32,7 +32,7 @@
   shadow-md hover:shadow-xl 
   hover:from-[#dd2476] hover:to-[#ff512f]
   hover:scale-105 active:scale-95 transition-all duration-300 xl:w-60;
-}
+} */
 .next-button {
   @apply px-8 py-3 w-44 rounded-xl font-semibold text-black
   bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0]

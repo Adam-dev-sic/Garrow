@@ -60,17 +60,28 @@ router.get("/me", async (req, res) => {
   if (!req.user) return res.status(401).json({ message: "Not authenticated" });
 
   try {
-    const user = await prisma.user.findUnique({
+     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        createdAt: true,
+      include: {
         dailies: true,
-        weeklies: true,
-        monthlies: true,
-        yearlies: true,
+        weeklies: {
+          include: {
+            dailies: true,
+          },
+        },
+        monthlies: {
+          include: {
+            dailies: true,
+            weeklies: true,
+          },
+        },
+        yearlies: {
+          include: {
+            dailies: true,
+            weeklies: true,
+            monthlies: true,
+          },
+        },
       },
     });
     if (!user) return res.status(404).json({ message: "User not found" });

@@ -20,7 +20,7 @@ model User {
   password  String
   name      String?
   createdAt DateTime @default(now())
-
+  totalpoints Int @default(0)
   dailies   Daily[]
   weeklies  Weekly[]
   monthlies Monthly[]
@@ -54,7 +54,7 @@ model Weekly {
   goal            String
   createdAt       DateTime @default(now())
   points          Int      @default(0)
-  progression     Float?
+  progress        Float?   @default(0)
   monthlyProgress Float?   @default(0)
 
   user   User @relation(fields: [userId], references: [id])
@@ -73,7 +73,7 @@ model Monthly {
   goal      String
   createdAt DateTime @default(now())
   points    Int      @default(0)
-  progress  Float?
+  progress  Float?   @default(0)
 
   yearlyProgress Float? @default(0)
 
@@ -87,11 +87,11 @@ model Monthly {
 }
 
 model Yearly {
-  id          Int      @id @default(autoincrement())
-  goal        String
-  createdAt   DateTime @default(now())
-  points      Int      @default(0)
-  progression Float?
+  id        Int      @id @default(autoincrement())
+  goal      String
+  createdAt DateTime @default(now())
+  points    Int      @default(0)
+  progress  Float?   @default(0)
 
   user   User @relation(fields: [userId], references: [id])
   userId Int

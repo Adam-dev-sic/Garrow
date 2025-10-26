@@ -6,13 +6,13 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import authRoutes from "./routes/authRoutes.js";
 import cors from "cors";
-import initializePassport from "./config/passport.js"
+import initializePassport from "./config/passport.js";
+import taskRoutes from "./routes/tasksRoutes.js";
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
-
 
 // Middleware
 app.use(
@@ -45,6 +45,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("", taskRoutes);
 
 // Root test route
 app.get("/", (req, res) => {

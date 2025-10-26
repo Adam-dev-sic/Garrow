@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useMediaQuery } from "react-responsive";
 import Linked from "./Linked";
+import TasksForm from "./TasksForm";
+import GoalsData from "./GoalsData";
 
 export default function Daily({ dailyOpen, setDailyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -14,14 +16,6 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   // Form inputs
-  const [formGoal, setFormGoal] = useState("");
-  const [formLinksIds, setFormLinksIds] = useState({
-    weekly: "",
-    monthly: "",
-    yearly: "",
-  });
-  const [formLinkedPoints, setFormLinkedPoints] = useState("");
-  const [formPoints, setFormPoints] = useState("");
 
   useEffect(() => {
     fetchUserData();
@@ -32,7 +26,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
       className="flex flex-col w-full space-y-10 min-h-2/3 
      max-h-4/5 overflow-y-auto overflow-x-auto bg-[#020201] border-2 border-white rounded-2xl text-white absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
     >
-      <div className="flex w-full text-center justify-between">
+      <div className="relative flex w-full text-center justify-between">
         <button
           onClick={() => setFormIsOpen(!formIsOpen)}
           className="task-button h-12 lg:!w-35"
@@ -49,7 +43,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
 
       {!formIsOpen ? (
         <>
-          <div className="flex justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
+          <div className="flex flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
             <h1
               onClick={() => {
                 setGoal(true);
@@ -106,7 +100,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
             </h1>
           </div>
 
-          {isLoading ? (
+          {/* {isLoading ? (
             <div className="flex items-center justify-center">
               Fetching Data...
             </div>
@@ -179,15 +173,15 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
                         <h1>
                           {linkedWeekly
                             ? linkedWeekly.goal
-                            : "No weekly linked"}
+                            : "No Weekly linked"}
                           <br />
                           {linkedMonthly
                             ? linkedMonthly.goal
-                            : "No monthly linked"}
+                            : "No Monthly linked"}
                           <br />
                           {linkedYearly
                             ? linkedYearly.goal
-                            : "No yearly linked"}
+                            : "No Yearly linked"}
                         </h1>
                       </div>
                     ) : progression ? (
@@ -205,173 +199,32 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
                 );
               })}
             </>
-          )}
+          )} */}
+          <GoalsData
+            isLoading={isLoading}
+            userData={userData}
+            isMobile={isMobile}
+            goal={goal}
+            progression={progression}
+            point={point}
+            linked={linked}
+            type={type}
+          />
         </>
       ) : (
-        <form action="" className="items-center justify-center">
-          <div className="flex justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
-            <h1
-              onClick={() => {
-                setGoal(true);
-                setLinked(false);
-                setProgression(false);
-                setPoints(false);
-              }}
-              className={`w-[25%] flex-shrink-0 text-lg ${
-                goal ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
-              }`}
-            >
-              Goal
-            </h1>
-            <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(true);
-                setProgression(false);
-                setPoints(false);
-              }}
-              className={`w-[25%] flex-shrink-0 text-lg ${
-                linked ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
-              }`}
-            >
-              Linked with
-            </h1>
-            {/* <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(false);
-                setProgression(true);
-                setPoints(false);
-              }}
-              className={`w-[33.33%] flex-shrink-0 text-lg ${
-                progression
-                  ? "underline !text-2xl lg:!no-underline lg:!text-lg"
-                  : ""
-              }`}
-            >
-              Progression W
-            </h1> */}
-            <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(false);
-                setProgression(false);
-                setPoints(true);
-              }}
-              className={`w-[25%] flex-shrink-0 text-lg ${
-                point ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
-              }`}
-            >
-              Points
-            </h1>
-          </div>
-          {isMobile ? (
-            goal ? (
-              <div className="flex flex-col items-center justify-center mt-25 space-y-2">
-                <label htmlFor="Goal">
-                  <h1 className="text-lg">Write Down Your Goal</h1>
-                </label>
-                <input
-                  type="text"
-                  className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-2xl p-3 z-50 focus:bg-[#251f19] lg:w-1/2"
-                />
-                <button
-                  onClick={() => {
-                    setGoal(false);
-                    setLinked(true);
-                    setProgression(false);
-                    setPoints(false);
-                  }}
-                  className="next-button w-30 mt-5 h-10 !rounded-full"
-                >
-                  Next
-                </button>
-              </div>
-            ) : linked ? (
-              <div className="flex flex-col items-center justify-center mt-10 space-y-2">
-                <Linked type={type} />
-                <button
-                  onClick={() => {
-                    setGoal(false);
-                    setLinked(false);
-                    setProgression(false);
-                    setPoints(true);
-                  }}
-                  className="next-button w-30 mt-5 h-10 !rounded-full"
-                >
-                  Next
-                </button>
-              </div>
-            ) : point ? (
-              <div className="flex flex-col items-center justify-center mt-25 space-y-2">
-                <label htmlFor="Goal">
-                  <h1 className="text-lg">Points reward</h1>
-                </label>
-                <input
-                  type="text"
-                  className="bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2"
-                />
-                <button
-                  onClick={() => {
-                    setGoal(false);
-                    setLinked(true);
-                    setProgression(false);
-                    setPoints(false);
-                  }}
-                  className="next-button w-30 mt-5 h-10 !rounded-full"
-                >
-                  Submit
-                </button>
-              </div>
-            ) : (
-              ""
-            )
-          ) : goal ? (
-            <div className="flex flex-col items-center justify-center mt-10 space-y-2">
-              <label htmlFor="Goal">
-                <h1 className="text-lg">Write Down Your Goal</h1>
-              </label>
-              <input
-                type="text"
-                className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-lg p-3 z-50 focus:bg-[#251f19] lg:w-1/2"
-              />
-            </div>
-          ) : linked ? (
-            <div className="flex flex-col items-center justify-center mt-10 space-y-2">
-              <label htmlFor="Goal">
-                <h1 className="text-lg">Is it linked?</h1>
-              </label>
-              <input
-                type="text"
-                className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-lg p-3 z-50 focus:bg-[#251f19]"
-              />
-            </div>
-          ) : progression ? (
-            <div className="flex flex-col items-center justify-center mt-10 space-y-2">
-              <label htmlFor="Goal">
-                <h1 className="text-lg">Progression towards Week Month Year</h1>
-              </label>
-              <input
-                type="text"
-                className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-lg p-3 z-50 focus:bg-[#251f19]"
-              />
-            </div>
-          ) : point ? (
-            <div className="flex flex-col items-center justify-center mt-10 space-y-2">
-              <label htmlFor="Goal">
-                <h1 className="text-lg">How many dsasdapoints as a reward?</h1>
-              </label>
-              <input
-                type="text"
-                className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-lg p-3 z-50 focus:bg-[#251f19]"
-              />
-            </div>
-          ) : (
-            <div>
-              <h1>Click one of the sections andsfdasfdafsda get started</h1>
-            </div>
-          )}
-        </form>
+        <TasksForm
+          setFormIsOpen={setFormIsOpen}
+          goal={goal}
+          point={point}
+          linked={linked}
+          progression={progression}
+          type={type}
+          isMobile={isMobile}
+          setGoal={setGoal}
+          setLinked={setLinked}
+          setProgression={setProgression}
+          setPoints={setPoints}
+        />
       )}
     </div>
   );

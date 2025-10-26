@@ -12,7 +12,7 @@ import UserWatcher from "./views/UserWatcher";
 function App() {
   return (
     <>
-   
+   <UserWatcher/>
       <Navbar />
       <main>
         <Outlet />
