@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import Linked from "./Linked";
 import TasksForm from "./TasksForm";
 import GoalsData from "./GoalsData";
+import Done from "./Done";
 
 export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -26,13 +27,15 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
       className="flex flex-col w-full space-y-10 min-h-2/3 
      max-h-4/5 overflow-y-auto overflow-x-auto bg-[#020201] border-2 border-white rounded-2xl text-white absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
     >
-      <div className="flex w-full text-center justify-between">
+      <div className="flex w-full space-x-1.5 text-center justify-between">
         <button
           onClick={() => setFormIsOpen(!formIsOpen)}
           className="task-button h-12 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
+        <Done type={type} />
+        
         <button
           onClick={() => setMonthlyOpen(!monthlyOpen)}
           className="task-button h-12 lg:!w-35"
@@ -85,7 +88,7 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
             >
               Progression Y
             </h1>
-            
+
             <h1
               onClick={() => {
                 setGoal(false);
@@ -101,7 +104,6 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
             </h1>
           </div>
 
-       
           <GoalsData
             isLoading={isLoading}
             userData={userData}

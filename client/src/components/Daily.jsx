@@ -4,6 +4,8 @@ import { useMediaQuery } from "react-responsive";
 import Linked from "./Linked";
 import TasksForm from "./TasksForm";
 import GoalsData from "./GoalsData";
+import { Link } from "react-router-dom";
+import Done from "./Done";
 
 export default function Daily({ dailyOpen, setDailyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -24,18 +26,19 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
   return (
     <div
       className="flex flex-col w-full space-y-10 min-h-2/3 
-     max-h-4/5 overflow-y-auto overflow-x-auto bg-[#020201] border-2 border-white rounded-2xl text-white absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
+      max-h-4/5 overflow-y-auto overflow-x-auto bg-[#020201] border-2 border-white rounded-2xl text-white absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
     >
-      <div className="relative flex w-full text-center justify-between">
+      <div className="relative flex w-full space-x-3 text-center justify-between">
         <button
           onClick={() => setFormIsOpen(!formIsOpen)}
-          className="task-button h-12 lg:!w-35"
+          className="task-button  h-14 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
+     <Done type={type} />
         <button
           onClick={() => setDailyOpen(!dailyOpen)}
-          className="task-button h-12 lg:!w-35"
+          className="task-button h-14  lg:!w-35"
         >
           Close
         </button>
@@ -100,118 +103,32 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
             </h1>
           </div>
 
-          {/* {isLoading ? (
-            <div className="flex items-center justify-center">
-              Fetching Data...
-            </div>
-          ) : !isMobile ? (
+          {userData ? (
             <>
-              {userData.dailies.map((daily) => {
-                const linkedWeekly = userData.weeklies.find(
-                  (w) => w.id === daily.weeklyId
-                );
-                const linkedMonthly = userData.monthlies.find(
-                  (w) => w.id === daily.monthlyId
-                );
-                const linkedYearly = userData.yearlies.find(
-                  (w) => w.id === daily.yearlyId
-                );
-
-                return (
-                  <div
-                    key={daily.id}
-                    className="flex rounded-lg p-5 bg-[#181818] items-start overflow-x-auto overflow-y-visible font-bold h-30 space-x-10 w-full border-b-white"
-                  >
-                    <div className="flex-shrink-0 mt-[2.5%] w-[33.33%]">
-                      <h1>{daily.goal}</h1>
-                    </div>
-                    <div className="flex-shrink-0 w-[33.33%] mt-0 overflow-y-auto">
-                      <h1>
-                        {linkedWeekly ? linkedWeekly.goal : "No weekly linked"}
-                        <br />
-                        {linkedMonthly
-                          ? linkedMonthly.goal
-                          : "No monthly linked"}
-                        <br />
-                        {linkedYearly ? linkedYearly.goal : "No yearly linked"}
-                      </h1>
-                    </div>
-                    <div className="flex-shrink-0 mt-[2.5%] w-[33.33%]">
-                      <h1>Weekly progress will be: {daily.weeklyProgress}%</h1>
-                    </div>
-                    <div className="flex-shrink-0 mt-[2.5%] w-[33.33%]">
-                      <h1>Points: {daily.points}</h1>
-                    </div>
-                  </div>
-                );
-              })}
+              <GoalsData
+                isLoading={isLoading}
+                userData={userData}
+                isMobile={isMobile}
+                goal={goal}
+                progression={progression}
+                point={point}
+                linked={linked}
+                type={type}
+              />
             </>
           ) : (
-            <>
-              {userData.dailies.map((daily) => {
-                const linkedWeekly = userData.weeklies.find(
-                  (w) => w.id === daily.weeklyId
-                );
-                const linkedMonthly = userData.monthlies.find(
-                  (w) => w.id === daily.monthlyId
-                );
-                const linkedYearly = userData.yearlies.find(
-                  (w) => w.id === daily.yearlyId
-                );
-
-                return (
-                  <div
-                    key={daily.id}
-                    className="flex rounded-lg p-5 bg-[#181818] items-start overflow-x-auto overflow-y-visible font-bold h-30 space-x-10 w-full border-b-white"
-                  >
-                    {goal ? (
-                      <div className="flex-shrink-0 mt-[3%] w-full">
-                        <h1>{daily.goal}</h1>
-                      </div>
-                    ) : linked ? (
-                      <div className="flex-shrink-0 w-full mt-0 overflow-y-auto">
-                        <h1>
-                          {linkedWeekly
-                            ? linkedWeekly.goal
-                            : "No Weekly linked"}
-                          <br />
-                          {linkedMonthly
-                            ? linkedMonthly.goal
-                            : "No Monthly linked"}
-                          <br />
-                          {linkedYearly
-                            ? linkedYearly.goal
-                            : "No Yearly linked"}
-                        </h1>
-                      </div>
-                    ) : progression ? (
-                      <div className="flex-shrink-0 mt-[3%] w-full">
-                        <h1>
-                          Weekly progress will be: {daily.weeklyProgress}%
-                        </h1>
-                      </div>
-                    ) : point ? (
-                      <div className="flex-shrink-0 mt-[3%] w-full">
-                        <h1>Points: {daily.points}</h1>
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </>
-          )} */}
-          <GoalsData
-            isLoading={isLoading}
-            userData={userData}
-            isMobile={isMobile}
-            goal={goal}
-            progression={progression}
-            point={point}
-            linked={linked}
-            type={type}
-          />
+            <div className="flex items-center justify-center w-full">
+              <h1>
+                You must{" "}
+                <span className="font-black drop-shadow-[0_0_6px_rgba(255,255,255,0.7)] underline">
+                  <Link to={"/auth"}>Login</Link>
+                </span>{" "}
+                first
+              </h1>
+            </div>
+          )}
         </>
-      ) : (
+      ) : userData ? (
         <TasksForm
           setFormIsOpen={setFormIsOpen}
           goal={goal}
@@ -225,6 +142,11 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
           setProgression={setProgression}
           setPoints={setPoints}
         />
+      ) : (
+        <h1 className="items-center justify-center w-full">
+          {" "}
+          You must login first
+        </h1>
       )}
     </div>
   );

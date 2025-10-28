@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import Linked from "./Linked";
 import TasksForm from "./TasksForm";
 import GoalsData from "./GoalsData";
+import Done from "./Done";
 
 export default function Yearly({ yearlyOpen, setYearlyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -33,6 +34,8 @@ export default function Yearly({ yearlyOpen, setYearlyOpen }) {
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
+        <Done type={type} />
+
         <button
           onClick={() => setYearlyOpen(!yearlyOpen)}
           className="task-button h-12 lg:!w-35"
@@ -43,7 +46,7 @@ export default function Yearly({ yearlyOpen, setYearlyOpen }) {
 
       {!formIsOpen ? (
         <>
-          <div className="flex flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
+          <div className="flex  flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
             <h1
               onClick={() => {
                 setGoal(true);

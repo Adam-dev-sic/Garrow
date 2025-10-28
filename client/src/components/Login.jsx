@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 function Login({ hovered, setHovered, setRegistered, setActive, active }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -35,16 +35,17 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
       onSubmit={handleLogin}
     >
 
+<Link to="/">
       <img
         className="w-30 h-30 z-50"
         src="images/abstract-by-tornike-uchava-dribbble.png"
         alt=""
-      />
-      <img
+      /></Link>
+      {/* <img
         className="absolute overflow-y-hidden w-25 h-150 mt-50 select-none pointer-events-none mr-2"
         src="images/Vertical-Line-PNG-HD-Image.png"
         alt=""
-      />
+      /> */}
       <h1 className="">Login and get started!</h1>
       <div className="flex-col flex ">
         <label htmlFor="email">Email</label>
@@ -97,7 +98,7 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
           </span>
         </p>
       </div>
-      <img
+      {/* <img
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onClick={() => setActive(!active)}
@@ -106,7 +107,7 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
         }`}
         src="images/[CITYPNG.COM]HD Spider Man Black Character PNG - 2500x2500.png"
         alt="Spider-Man"
-      />
+      /> */}
     </form>
   );
 }

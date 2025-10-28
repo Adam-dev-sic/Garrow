@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Register({ hovered, setHovered, setRegistered, setActive, active }) {
   const [formData, setFormData] = useState({
@@ -33,16 +34,18 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
       action=""
       onSubmit={handleRegister}
     >
-      <img
-        className="w-30 h-30 z-50"
-        src="images/abstract-by-tornike-uchava-dribbble.png"
-        alt=""
-      />
-      <img
+      <Link to="/">
+        <img
+          className="w-30 h-30 z-50"
+          src="images/abstract-by-tornike-uchava-dribbble.png"
+          alt=""
+        />
+      </Link>
+      {/* <img
         className="absolute overflow-y-hidden w-25 h-150 mt-50 select-none pointer-events-none mr-2"
         src="images/Vertical-Line-PNG-HD-Image.png"
         alt=""
-      />
+      /> */}
       <h1 className="">Register to get started!</h1>
       <div className="flex flex-col">
         <label htmlFor="Name">Name:</label>
@@ -90,7 +93,6 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
         <button
           type="submit"
           className="bg-[#343536] w-full h-10 rounded-lg z-10 hover:bg-[#493f33] mt-3"
-          
         >
           Submit
         </button>
@@ -107,7 +109,7 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
           </span>
         </p>
       </div>
-      <img
+      {/* <img
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onClick={() => setActive(!active)}
@@ -116,7 +118,7 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
         }`}
         src="images/[CITYPNG.COM]HD Spider Man Black Character PNG - 2500x2500.png"
         alt="Spider-Man"
-      />
+      /> */}
     </form>
   );
 }

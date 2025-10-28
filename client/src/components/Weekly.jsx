@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import Linked from "./Linked";
 import TasksForm from "./TasksForm";
 import GoalsData from "./GoalsData";
+import Done from "./Done";
 
 export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -33,6 +34,8 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
+     <Done type={type} />
+
         <button
           onClick={() => setWeeklyOpen(!weeklyOpen)}
           className="task-button h-12 lg:!w-35"

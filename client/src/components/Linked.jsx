@@ -43,7 +43,7 @@ function Linked({
             <select
               name=""
               id="weeklySelect"
-              className="border-2 border-white p-2 rounded-2xl"
+              className="border-2 w-full border-white p-2 rounded-2xl"
               value={formLinksIds.weekly}
               onChange={(e) => {
                 const selectedValue = e.target.value;
@@ -99,7 +99,7 @@ function Linked({
               </span>
             </h1>
             <select
-              className="border-2 border-white p-2 rounded-2xl"
+              className="w-full border-2 border-white p-2 rounded-2xl"
               name=""
               id="Monthlies"
               value={formLinksIds.monthly}
@@ -160,7 +160,7 @@ function Linked({
             <select
               name=""
               id="yearlySelect"
-              className="border-2 border-white p-2 rounded-2xl"
+              className="border-2 border-white p-2 w-full rounded-2xl"
               value={formLinksIds.yearly}
               onChange={(e) => {
                 const selectedValue = e.target.value;

@@ -57,6 +57,105 @@ export const addTask = async (req, res) => {
   }
 };
 
+export const checkGoal = async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { goalId, isChecked } = req.body;
+
+    if (typeof isChecked !== "boolean" || !goalId) {
+      return res.status(400).json({ message: "Invalid input data." });
+    }
+
+    const model = prisma[type]; // e.g., prisma.daily or prisma.weekly
+
+    if (!model) {
+      return res.status(400).json({ message: "Invalid model type." });
+    }
+    const goal = await model.findUnique({
+      where: { id: Number(goalId) },
+    });
+
+    if (!goal) {
+      return res.status(404).json({ message: "Daily goal not found." });
+    }
+
+    const updatedGoal = await model.update({
+      where: { id: Number(goalId) },
+      data: { checked: isChecked },
+    });
+    res.status(200).json({
+      message: "Daily goal status updated successfully.",
+      goal: updatedGoal,
+    });
+  } catch (error) {
+    console.error("Error updating daily goal status:", error);
+    res.status(500).json({ error: "Failed to update daily goal status." });
+  }
+};
+
+export const removeDoneTasks = async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { userId, id, points, progress ,typeId} = req.body;
+
+    console.log("Incoming:", { type, userId, id, points, progress });
+
+    const model = prisma[type];
+    console.log("Model resolved:", !!model);
+
+    if (!model) {
+      return res.status(400).json({ message: "Invalid model type." });
+    }
+
+    console.log("➡️ Updating user points...");
+    await prisma.user.update({
+      where: { id: Number(userId) },
+      data: {
+        totalpoints: { increment: Number(points) || 0 },
+      },
+    });
+    console.log("✅ User updated.");
+
+    // Progress logic
+    const nextModel = 
+      type === "daily"
+        ? prisma.weekly
+        : type === "weekly"
+        ? prisma.monthly
+        : type === "monthly"
+        ? prisma.yearly
+        : null; 
+    if ( progress) {
+      console.log(`➡️ Updating progress: Progress to increment: ${progress}`);
+      await nextModel.update({
+        where: { id: Number(typeId) },
+        data: {
+          progress: { increment: Number(progress) || 0 },
+        },
+      });
+      console.log("✅ Progress updated.");
+    }
+
+    console.log("➡️ Deleting goal...");
+    await model.delete({
+      where: { id: Number(id) },
+    });
+    console.log("✅ Goal deleted.");
+
+    res
+      .status(200)
+      .json({ message: "Task completed and removed successfully." });
+  } catch (error) {
+    console.error("❌ Error removing completed task:");
+    console.error("Name:", error.name);
+    console.error("Message:", error.message);
+    console.error("Stack:", error.stack);
+    res
+      .status(500)
+      .json({ error: error.message || "Failed to remove completed task." });
+  }
+};
+
 export const removeTask = async (req, res) => {};
 
 export const editTask = async (req, res) => {};

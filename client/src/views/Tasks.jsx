@@ -108,7 +108,9 @@ function Tasks() {
         </button>
       </div>
       {dailyOpen && (
+        
         <div className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10">
+          
           <Daily dailyOpen={dailyOpen} setDailyOpen={setDailyOpen} />
         </div>
       )}

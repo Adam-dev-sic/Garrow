@@ -15,16 +15,16 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  totalpoints Int @default(0)
-  dailies   Daily[]
-  weeklies  Weekly[]
-  monthlies Monthly[]
-  yearlies  Yearly[]
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  name        String?
+  createdAt   DateTime  @default(now())
+  totalpoints Int       @default(0)
+  dailies     Daily[]
+  weeklies    Weekly[]
+  monthlies   Monthly[]
+  yearlies    Yearly[]
 }
 
 model Daily {
@@ -32,6 +32,7 @@ model Daily {
   goal      String
   createdAt DateTime @default(now())
   points    Int      @default(0)
+  checked   Boolean  @default(false)
 
   weeklyProgress Float? @default(0)
 
@@ -50,12 +51,14 @@ model Daily {
 }
 
 model Weekly {
-  id              Int      @id @default(autoincrement())
-  goal            String
-  createdAt       DateTime @default(now())
-  points          Int      @default(0)
-  progress        Float?   @default(0)
-  monthlyProgress Float?   @default(0)
+  id        Int      @id @default(autoincrement())
+  goal      String
+  createdAt DateTime @default(now())
+  points    Int      @default(0)
+  progress  Float?   @default(0)
+  checked   Boolean  @default(false)
+
+  monthlyProgress Float? @default(0)
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
@@ -74,6 +77,7 @@ model Monthly {
   createdAt DateTime @default(now())
   points    Int      @default(0)
   progress  Float?   @default(0)
+  checked   Boolean  @default(false)
 
   yearlyProgress Float? @default(0)
 
@@ -92,6 +96,7 @@ model Yearly {
   createdAt DateTime @default(now())
   points    Int      @default(0)
   progress  Float?   @default(0)
+  checked   Boolean  @default(false)
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
