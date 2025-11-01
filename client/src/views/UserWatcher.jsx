@@ -7,7 +7,7 @@ function UserWatcher() {
   useEffect(() => {
     
     fetchUserData();
-  }, [userData]);
+  }, []);
 
   return null; // it doesn’t render anything — it just keeps user data updated
 }

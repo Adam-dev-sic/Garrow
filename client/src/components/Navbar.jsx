@@ -30,7 +30,7 @@ function Navbar() {
 
       {/* Right section */}
       {userData && userData.email ? (
-        <Link to={"/profile"}>
+        <Link to={"/"}>
           <button className="cursor-pointer text-white hover:text-gray-300 absolute bottom-10 right-8 max-md:hidden">
             {userData.name}
           </button>{" "}
