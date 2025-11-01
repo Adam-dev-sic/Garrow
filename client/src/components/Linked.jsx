@@ -30,11 +30,11 @@ function Linked({
     }
   }, [formLinksIds]);
   return (
-    <div>
+    <div className="w-full">
       <>
         {type === "daily" ? (
           <div className="flex flex-col space-y-2 mb-5">
-            <h1 className="font-bold text-2xl">
+            <h1 className="font-bold text-2xl w-full">
               Weekly Goals{" "}
               <span>
                 <p className="opacity-80 text-xs">(optional)</p>
@@ -43,7 +43,7 @@ function Linked({
             <select
               name=""
               id="weeklySelect"
-              className="border-2 w-full border-white p-2 rounded-2xl"
+              className="border-2 w-full border-white p-2 rounded-2xl mini-animation"
               value={formLinksIds.weekly}
               onChange={(e) => {
                 const selectedValue = e.target.value;
@@ -99,7 +99,7 @@ function Linked({
               </span>
             </h1>
             <select
-              className="w-full border-2 border-white p-2 rounded-2xl"
+              className="w-full border-2 border-white mini-animation p-2 rounded-2xl"
               name=""
               id="Monthlies"
               value={formLinksIds.monthly}
@@ -160,7 +160,7 @@ function Linked({
             <select
               name=""
               id="yearlySelect"
-              className="border-2 border-white p-2 w-full rounded-2xl"
+              className="border-2 border-white p-2 mini-animation w-full rounded-2xl"
               value={formLinksIds.yearly}
               onChange={(e) => {
                 const selectedValue = e.target.value;
@@ -187,7 +187,7 @@ function Linked({
               })}
             </select>
             <div
-              className={`flex items-center mt-5 space-x-3 ${
+              className={`flex items-center mt-5 space-x-3 mini-animation ${
                 yearlyProgress ? "!flex" : "!hidden"
               }`}
             >

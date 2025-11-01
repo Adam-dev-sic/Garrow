@@ -51,12 +51,13 @@ model Daily {
 }
 
 model Weekly {
-  id        Int      @id @default(autoincrement())
-  goal      String
-  createdAt DateTime @default(now())
-  points    Int      @default(0)
-  progress  Float?   @default(0)
-  checked   Boolean  @default(false)
+  id                  Int      @id @default(autoincrement())
+  goal                String
+  createdAt           DateTime @default(now())
+  points              Int      @default(0)
+  progress            Float?   @default(0)
+  checked             Boolean  @default(false)
+  progressBeforeCheck Int? // optional
 
   monthlyProgress Float? @default(0)
 
@@ -72,12 +73,13 @@ model Weekly {
 }
 
 model Monthly {
-  id        Int      @id @default(autoincrement())
-  goal      String
-  createdAt DateTime @default(now())
-  points    Int      @default(0)
-  progress  Float?   @default(0)
-  checked   Boolean  @default(false)
+  id                  Int      @id @default(autoincrement())
+  goal                String
+  createdAt           DateTime @default(now())
+  points              Int      @default(0)
+  progress            Float?   @default(0)
+  checked             Boolean  @default(false)
+  progressBeforeCheck Int? // optional
 
   yearlyProgress Float? @default(0)
 
@@ -91,12 +93,13 @@ model Monthly {
 }
 
 model Yearly {
-  id        Int      @id @default(autoincrement())
-  goal      String
-  createdAt DateTime @default(now())
-  points    Int      @default(0)
-  progress  Float?   @default(0)
-  checked   Boolean  @default(false)
+  id                  Int      @id @default(autoincrement())
+  goal                String
+  createdAt           DateTime @default(now())
+  points              Int      @default(0)
+  progress            Float?   @default(0)
+  checked             Boolean  @default(false)
+  progressBeforeCheck Int? // optional
 
   user   User @relation(fields: [userId], references: [id])
   userId Int

@@ -62,7 +62,7 @@ router.get("/me", async (req, res) => {
   try {
      const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      include: {
+      include: { 
         dailies: true,
         weeklies: {
           include: {

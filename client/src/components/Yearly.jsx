@@ -15,6 +15,7 @@ export default function Yearly({ yearlyOpen, setYearlyOpen }) {
   const [type, setType] = useState("yearly");
   const { userData, fetchUserData, triggerRefetch, isLoading } = useUserStore();
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [editId, setEditId] = useState(null);
 
   // Form inputs
 
@@ -29,7 +30,8 @@ export default function Yearly({ yearlyOpen, setYearlyOpen }) {
     >
       <div className="flex w-full text-center justify-between">
         <button
-          onClick={() => setFormIsOpen(!formIsOpen)}
+               onClick={() => {setFormIsOpen(!formIsOpen) ,setEditId(null)}}
+
           className="task-button h-12 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
@@ -98,6 +100,10 @@ export default function Yearly({ yearlyOpen, setYearlyOpen }) {
             point={point}
             linked={linked}
             type={type}
+            formIsOpen={formIsOpen}
+            setFormIsOpen={setFormIsOpen}
+            setEditId={setEditId}
+            editId={editId}
           />
         </>
       ) : (
@@ -113,6 +119,8 @@ export default function Yearly({ yearlyOpen, setYearlyOpen }) {
           setLinked={setLinked}
           setProgression={setProgression}
           setPoints={setPoints}
+          editId={editId}
+          setEditId={setEditId}
         />
       )}
     </div>

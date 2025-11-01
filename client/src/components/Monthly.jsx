@@ -15,6 +15,7 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
   const [type, setType] = useState("monthly");
   const { userData, fetchUserData, triggerRefetch, isLoading } = useUserStore();
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [editId, setEditId] = useState(null);
 
   // Form inputs
 
@@ -29,13 +30,15 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
     >
       <div className="flex w-full space-x-1.5 text-center justify-between">
         <button
-          onClick={() => setFormIsOpen(!formIsOpen)}
+          onClick={() => {
+            setFormIsOpen(!formIsOpen), setEditId(null);
+          }}
           className="task-button h-12 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
         <Done type={type} />
-        
+
         <button
           onClick={() => setMonthlyOpen(!monthlyOpen)}
           className="task-button h-12 lg:!w-35"
@@ -113,6 +116,10 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
             point={point}
             linked={linked}
             type={type}
+            editId={editId}
+            setEditId={setEditId}
+            formIsOpen={formIsOpen}
+            setFormIsOpen={setFormIsOpen}
           />
         </>
       ) : (
@@ -128,6 +135,8 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
           setLinked={setLinked}
           setProgression={setProgression}
           setPoints={setPoints}
+          editId={editId}
+          setEditId={setEditId}
         />
       )}
     </div>

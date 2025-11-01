@@ -81,8 +81,15 @@ export const checkGoal = async (req, res) => {
 
     const updatedGoal = await model.update({
       where: { id: Number(goalId) },
-      data: { checked: isChecked },
+      data: {
+        checked: isChecked,
+        ...(type !== "daily" && {
+          progress: isChecked ? 100 : goal.progressBeforeCheck ?? goal.progress,
+          progressBeforeCheck: isChecked ? goal.progress : null,
+        }),
+      },
     });
+
     res.status(200).json({
       message: "Daily goal status updated successfully.",
       goal: updatedGoal,
@@ -93,10 +100,85 @@ export const checkGoal = async (req, res) => {
   }
 };
 
+export const editTasks = async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { id, goal, linked, linkedProgress, points, editId, formProgress } =
+      req.body;
+
+    if (!id || !goal || !points)
+      return res.status(400).json({
+        message: "An error happened, Please fill all the informations",
+      });
+
+    const model = prisma[type]; // e.g., prisma.daily or prisma.weekly
+    if (!model) {
+      return res.status(400).json({ message: "Invalid model type." });
+    }
+
+    const data = {
+      goal,
+      points: Number(points) || 0,
+    };
+    if (type != "daily") {
+      data.progress = Number(formProgress) || 0;
+    }
+    const weeklyLinked = linked?.weekly && linked.weekly !== "none";
+    const monthlyLinked = linked?.monthly && linked.monthly !== "none";
+    const yearlyLinked = linked?.yearly && linked.yearly !== "none";
+    if (type === "daily") {
+      data.weekly = weeklyLinked
+        ? { connect: { id: Number(linked.weekly) } }
+        : { disconnect: true };
+      data.weeklyProgress = weeklyLinked ? Number(linkedProgress) : 0;
+
+      data.monthly = monthlyLinked
+        ? { connect: { id: Number(linked.monthly) } }
+        : { disconnect: true };
+
+      data.yearly = yearlyLinked
+        ? { connect: { id: Number(linked.yearly) } }
+        : { disconnect: true };
+    }
+    if (type === "weekly") {
+      data.monthlyProgress = monthlyLinked ? Number(linkedProgress) : 0;
+
+      data.monthly = monthlyLinked
+        ? { connect: { id: Number(linked.monthly) } }
+        : { disconnect: true };
+
+      data.yearly = yearlyLinked
+        ? { connect: { id: Number(linked.yearly) } }
+        : { disconnect: true };
+    }
+
+    if (type === "monthly") {
+      data.yearlyProgress = yearlyLinked ? Number(linkedProgress) : 0;
+
+      data.yearly = yearlyLinked
+        ? { connect: { id: Number(linked.yearly) } }
+        : { disconnect: true };
+    }
+
+    const updatedTask = await model.update({
+      where: { id: Number(editId) },
+      data,
+    });
+
+    res.status(200).json({
+      message: `${type} goal updated successfully`,
+      task: updatedTask,
+    });
+  } catch (error) {
+    console.error("Error updating task:", error);
+    res.status(500).json({ error: "Failed to update task" });
+  }
+};
+
 export const removeDoneTasks = async (req, res) => {
   try {
     const { type } = req.params;
-    const { userId, id, points, progress ,typeId} = req.body;
+    const { userId, id, points, progress, typeId } = req.body;
 
     console.log("Incoming:", { type, userId, id, points, progress });
 
@@ -117,25 +199,26 @@ export const removeDoneTasks = async (req, res) => {
     console.log("✅ User updated.");
 
     // Progress logic
-    const nextModel = 
+    const nextModel =
       type === "daily"
         ? prisma.weekly
         : type === "weekly"
         ? prisma.monthly
         : type === "monthly"
         ? prisma.yearly
-        : null; 
-    if ( progress) {
+        : null;
+    if (progress) {
       console.log(`➡️ Updating progress: Progress to increment: ${progress}`);
-      await nextModel.update({
-        where: { id: Number(typeId) },
-        data: {
-          progress: { increment: Number(progress) || 0 },
-        },
-      });
-      console.log("✅ Progress updated.");
+      if (typeId) {
+        await nextModel.update({
+          where: { id: Number(typeId) },
+          data: {
+            progress: { increment: Number(progress) || 0 },
+          },
+        });
+        console.log("✅ Progress updated.");
+      }
     }
-
     console.log("➡️ Deleting goal...");
     await model.delete({
       where: { id: Number(id) },
@@ -156,6 +239,31 @@ export const removeDoneTasks = async (req, res) => {
   }
 };
 
-export const removeTask = async (req, res) => {};
+export const deleteTasks = async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { editId } = req.body;
+
+    if (!editId)
+      return res.status(400).json({
+        message: "An error happened, Please provide the task id",
+      });
+    const model = prisma[type]; // e.g., prisma.daily or prisma.weekly
+    if (!model) {
+      return res.status(400).json({ message: "Invalid model type." });
+    }
+
+    await model.delete({
+      where: { id: Number(editId) },
+    });
+
+    res.status(200).json({
+      message: `${type} goal deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    res.status(500).json({ error: "Failed to delete task" });
+  }
+};
 
 export const editTask = async (req, res) => {};

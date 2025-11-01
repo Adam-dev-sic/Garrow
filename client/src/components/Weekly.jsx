@@ -15,6 +15,7 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
   const [type, setType] = useState("weekly");
   const { userData, fetchUserData, triggerRefetch, isLoading } = useUserStore();
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [editId, setEditId] = useState(null);
 
   // Form inputs
 
@@ -29,12 +30,13 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
     >
       <div className="flex w-full text-center justify-between">
         <button
-          onClick={() => setFormIsOpen(!formIsOpen)}
+          onClick={() => {setFormIsOpen(!formIsOpen) ,setEditId(null)}}
+
           className="task-button h-12 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
-     <Done type={type} />
+        <Done type={type} />
 
         <button
           onClick={() => setWeeklyOpen(!weeklyOpen)}
@@ -45,77 +47,164 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
       </div>
 
       {!formIsOpen ? (
-        <>
-          <div className="flex flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
-            <h1
-              onClick={() => {
-                setGoal(true);
-                setLinked(false);
-                setProgression(false);
-                setPoints(false);
-              }}
-              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
-                goal ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
-              }`}
-            >
-              Goal
-            </h1>
-            <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(true);
-                setProgression(false);
-                setPoints(false);
-              }}
-              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
-                linked ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
-              }`}
-            >
-              Linked with
-            </h1>
-            <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(false);
-                setProgression(true);
-                setPoints(false);
-              }}
-              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
-                progression
-                  ? "underline !text-2xl lg:!no-underline lg:!text-lg"
-                  : ""
-              }`}
-            >
-              Progression M
-            </h1>
-            
-            <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(false);
-                setProgression(false);
-                setPoints(true);
-              }}
-              className={`min-w-[33.33%] flex-shrink-0 text-lg ${
-                point ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
-              }`}
-            >
-              Points
-            </h1>
-          </div>
+        isMobile ? (
+          <>
+            <div className="flex flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
+              <h1
+                onClick={() => {
+                  setGoal(true);
+                  setLinked(false);
+                  setProgression(false);
+                  setPoints(false);
+                }}
+                className={`min-w-[30%] flex-shrink-0 text-lg ${
+                  goal ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
+                }`}
+              >
+                Goal
+              </h1>
+              <h1
+                onClick={() => {
+                  setGoal(false);
+                  setLinked(true);
+                  setProgression(false);
+                  setPoints(false);
+                }}
+                className={`min-w-[30%] flex-shrink-0 text-lg ${
+                  linked
+                    ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                    : ""
+                }`}
+              >
+                Linked with
+              </h1>
+              <h1
+                onClick={() => {
+                  setGoal(false);
+                  setLinked(false);
+                  setProgression(true);
+                  setPoints(false);
+                }}
+                className={`min-w-[30%] flex-shrink-0 text-lg ${
+                  progression
+                    ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                    : ""
+                }`}
+              >
+                Progression M
+              </h1>
 
-       
-          <GoalsData
-            isLoading={isLoading}
-            userData={userData}
-            isMobile={isMobile}
-            goal={goal}
-            progression={progression}
-            point={point}
-            linked={linked}
-            type={type}
-          />
-        </>
+              <h1
+                onClick={() => {
+                  setGoal(false);
+                  setLinked(false);
+                  setProgression(false);
+                  setPoints(true);
+                }}
+                className={`min-w-[30%] flex-shrink-0 text-lg ${
+                  point
+                    ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                    : ""
+                }`}
+              >
+                Points
+              </h1>
+            </div>
+
+            <GoalsData
+              isLoading={isLoading}
+              userData={userData}
+              isMobile={isMobile}
+              goal={goal}
+              progression={progression}
+              point={point}
+              linked={linked}
+              type={type}
+            />
+          </>
+        ) : (
+          <>
+            <div className="flex flex-shrink-0 justify-between overflow-x-auto h-15 space-x-10 w-full border-b-2 border-b-white">
+              <h1
+                onClick={() => {
+                  setGoal(true);
+                  setLinked(false);
+                  setProgression(false);
+                  setPoints(false);
+                }}
+                className={`min-w-[20%] flex-shrink-0 text-lg  ml-30 ${
+                  goal ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
+                }`}
+              >
+                Goal
+              </h1>
+
+              {type != "daily" && (
+                <h1
+                  onClick={() => {
+                    setGoal(false);
+                    setLinked(true);
+                    setProgression(false);
+                    setPoints(false);
+                  }}
+                  className={`min-w-[20%] flex-shrink-0 text-lg ${
+                    linked
+                      ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                      : ""
+                  }`}
+                >
+                  Progress
+                </h1>
+              )}
+              <h1
+                onClick={() => {
+                  setGoal(false);
+                  setLinked(false);
+                  setProgression(true);
+                  setPoints(false);
+                }}
+                className={`min-w-[20%] flex-shrink-0 text-lg ${
+                  progression
+                    ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                    : ""
+                }`}
+              >
+                Progression/Points
+              </h1>
+
+              <h1
+                onClick={() => {
+                  setGoal(false);
+                  setLinked(true);
+                  setProgression(false);
+                  setPoints(false);
+                }}
+                className={`min-w-[20%] flex-shrink-0 text-lg ${
+                  linked
+                    ? "underline !text-2xl lg:!no-underline lg:!text-lg"
+                    : ""
+                }`}
+              >
+                Linked with
+              </h1>
+            </div>
+
+            <GoalsData
+              isLoading={isLoading}
+              userData={userData}
+              isMobile={isMobile}
+              goal={goal}
+              progression={progression}
+              point={point}
+              linked={linked}
+              type={type}
+              editId={editId}
+              setEditId={setEditId}
+              formIsOpen={formIsOpen}
+              setFormIsOpen={setFormIsOpen}
+            />
+          </>
+        )
       ) : (
         <TasksForm
           setFormIsOpen={setFormIsOpen}
@@ -129,6 +218,8 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
           setLinked={setLinked}
           setProgression={setProgression}
           setPoints={setPoints}
+          editId={editId}
+          setEditId={setEditId}
         />
       )}
     </div>

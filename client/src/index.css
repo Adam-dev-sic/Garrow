@@ -51,6 +51,19 @@
 .next-button:hover::after {
   @apply opacity-100 translate-x-[3px];
 }
+
+.delete-button {
+  @apply px-8 py-3 w-44 rounded-xl font-semibold text-white
+  bg-gradient-to-r from-[#ff4d4d] via-[#ff1a1a] to-[#b30000]
+  shadow-[0_0_15px_rgba(255,0,0,0.3)]
+  hover:from-[#ff6666] hover:via-[#ff3333] hover:to-[#990000]
+  transition-all duration-300 ease-in-out
+  hover:scale-105 active:scale-95 xl:w-60 relative overflow-hidden;
+}
+.mini-animation {
+  @apply hover:scale-105 transition-all duration-300 ease-in-out;
+}
+
 .berserk-h1 {
   @apply drop-shadow-[0_2px_8px_rgba(255,100,50,0.5)] bg-gradient-to-br from-[#d9332b] via-[#ed5828] to-[#fe9262]  bg-clip-text text-transparent;
 }
@@ -94,4 +107,35 @@
 
 .btn-glow:hover::before {
   animation: border-spin 1.5s linear infinite;
+}
+
+
+.villain-title {
+  /* Epic villain text look */
+  font-weight: 900;
+  font-size: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+  text-shadow:
+    0 0 5px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(0, 0, 0, 0.6);
+
+  animation: villain-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes villain-glow {
+  from {
+    text-shadow:
+      0 0 5px rgba(0, 0, 0, 0.9),
+      0 0 15px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(0, 0, 0, 0.6);
+  }
+  to {
+    text-shadow:
+      0 0 30px rgba(0, 0, 0, 1),
+      0 0 55px rgba(0, 0, 0, 0.9),
+      0 0 90px rgba(0, 0, 0, 0.8);
+  }
 }

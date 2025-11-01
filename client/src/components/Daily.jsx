@@ -16,6 +16,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
   const [type, setType] = useState("daily");
   const { userData, fetchUserData, triggerRefetch, isLoading } = useUserStore();
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [editId, setEditId] = useState(null);
 
   // Form inputs
 
@@ -30,12 +31,12 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
     >
       <div className="relative flex w-full space-x-3 text-center justify-between">
         <button
-          onClick={() => setFormIsOpen(!formIsOpen)}
+          onClick={() => {setFormIsOpen(!formIsOpen) ,setEditId(null)}}
           className="task-button  h-14 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
-     <Done type={type} />
+        <Done type={type} />
         <button
           onClick={() => setDailyOpen(!dailyOpen)}
           className="task-button h-14  lg:!w-35"
@@ -114,6 +115,10 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
                 point={point}
                 linked={linked}
                 type={type}
+                editId={editId}
+                setEditId={setEditId}
+                formIsOpen={formIsOpen}
+                setFormIsOpen={setFormIsOpen}
               />
             </>
           ) : (
@@ -141,6 +146,8 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
           setLinked={setLinked}
           setProgression={setProgression}
           setPoints={setPoints}
+          editId={editId}
+          setEditId={setEditId}
         />
       ) : (
         <h1 className="items-center justify-center w-full">
