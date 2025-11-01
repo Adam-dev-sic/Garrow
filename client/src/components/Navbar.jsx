@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUserStore } from "../store/useUserStore";
 
 function Navbar() {
+  const { userData } = useUserStore();
+
   return (
     <nav className="flex items-center justify-center bg-black w-full fixed z-50 h-25 px-8 py-8">
       {/* Center section */}
@@ -26,11 +29,19 @@ function Navbar() {
       </div>
 
       {/* Right section */}
-      <Link to={"/auth"}>
-        <button className="cursor-pointer text-white hover:text-gray-300 absolute bottom-10 right-8 max-md:hidden">
-          Login
-        </button>{" "}
-      </Link>
+      {userData && userData.email ? (
+        <Link to={"/profile"}>
+          <button className="cursor-pointer text-white hover:text-gray-300 absolute bottom-10 right-8 max-md:hidden">
+            {userData.name}
+          </button>{" "}
+        </Link>
+      ) : (
+        <Link to={"/auth"}>
+          <button className="cursor-pointer text-white hover:text-gray-300 absolute bottom-10 right-8 max-md:hidden">
+            Login
+          </button>{" "}
+        </Link>
+      )}
     </nav>
   );
 }
