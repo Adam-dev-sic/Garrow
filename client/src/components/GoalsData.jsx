@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { Link } from "react-router-dom";
+import { useTodaysPoints } from "../store/useTodaysPoints";
 
 function GoalsData({
   isLoading,
@@ -72,6 +73,8 @@ function GoalsData({
       console.error("Error:", err);
     }
   };
+
+  // a feature i thought about adding but ended up deciding not to (this code doesnt work as i intended but thats not the reason for discarding the idea)
   // useEffect(() => {
   //   if (!iterationValue || iterationValue.length === 0) return;
 
@@ -227,7 +230,11 @@ function GoalsData({
                           </div>
                         </div>
                       ) : null}
-                      <div className={`flex flex-col space-y-5 mr-0 ${type === "daily" ? "w-[50%]": "w-[35%]"} `}>
+                      <div
+                        className={`flex flex-col space-y-5 mr-0 ${
+                          type === "daily" ? "w-[50%]" : "w-[35%]"
+                        } `}
+                      >
                         <h1 className=" text-lg text-center group-has-[input:checked]:drop-shadow-[0_0_6px_rgba(255,255,255,0.7)] font-bold group-has-[input:checked]:!font-black ">
                           Points Reward:{goalType.points}
                         </h1>
@@ -442,7 +449,7 @@ function GoalsData({
                 className="flex rounded-lg flex-shrink-0 has-[input:checked]:border-0 has-[input:checked]:shadow-[0_0_9px_4px_rgba(255,255,255,0.8)]  p-5 bg-[#181818] items-start border-b-2 overflow-x-auto overflow-y-visible font-bold h-30 space-x-10 w-full border-b-white"
               >
                 {goal ? (
-                  <div className="flex-shrink-0 flex-col space-y-3 w-full items-center justify-center  flex">
+                  <div className="flex-shrink-0 flex-col space-y-3 w-full group items-center justify-center  flex">
                     <label className="flex items-center space-x-3 cursor-pointer select-none group">
                       <div className="relative w-7 h-7 flex-shrink-0">
                         <input
@@ -494,6 +501,25 @@ function GoalsData({
                         </div>
                       </div>
                     ) : null}
+                    <div
+                      className={`flex justify-between  space-x-5 p-2 w-full ${
+                        type === "daily" ? "mt-6" : "mt-2"
+                      }`}
+                    >
+                      {type != "yearly" ? (
+                        <h1 className=" group-has-[input:checked]:drop-shadow-[0_0_6px_rgba(255,255,255,0.7)] font-black text-xs text-center ">
+                          {progressText}: {goalType[progressKey] ?? 0}%
+                        </h1>
+                      ) : null}
+                      {/* <h1 className=" group-has-[input:checked]:drop-shadow-[0_0_6px_rgba(255,255,255,0.7)] font-black text-xs text-center ">
+                        {progressText}: {goalType[progressKey] ?? 0}%
+                      </h1> */}
+                      <h1
+                        className={`text-xs group-has-[input:checked]:drop-shadow-[0_0_6px_rgba(255,255,255,0.7)] font-black mx-auto text-center `}
+                      >
+                        Points: {goalType.points}
+                      </h1>
+                    </div>
                   </div>
                 ) : linked ? (
                   <div className="flex-shrink-0 w-full mt-0 overflow-y-auto">
@@ -624,15 +650,7 @@ function GoalsData({
                     </h1>
                   </div>
                 ) : point ? (
-                  <div className="flex-shrink-0  justify-center text-center w-full">
-                    <h1 className="text-2xl font-black mt-[8%]">
-                      Points:{" "}
-                      <span className="drop-shadow-[0_0_6px_rgba(255,255,255,0.7)]">
-                        {" "}
-                        {goalType.points}
-                      </span>
-                    </h1>
-                  </div>
+                  <div className="flex-shrink-0  justify-center text-center w-full"></div>
                 ) : null}
               </div>
             );

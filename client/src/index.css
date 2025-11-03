@@ -109,7 +109,6 @@
   animation: border-spin 1.5s linear infinite;
 }
 
-
 .villain-title {
   /* Epic villain text look */
   font-weight: 900;
@@ -117,9 +116,7 @@
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: #ffffff;
-  text-shadow:
-    0 0 5px rgba(0, 0, 0, 0.9),
-    0 0 15px rgba(0, 0, 0, 0.7),
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.7),
     0 0 30px rgba(0, 0, 0, 0.6);
 
   animation: villain-glow 3s ease-in-out infinite alternate;
@@ -127,15 +124,15 @@
 
 @keyframes villain-glow {
   from {
-    text-shadow:
-      0 0 5px rgba(0, 0, 0, 0.9),
-      0 0 15px rgba(0, 0, 0, 0.7),
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.7),
       0 0 30px rgba(0, 0, 0, 0.6);
   }
   to {
-    text-shadow:
-      0 0 30px rgba(0, 0, 0, 1),
-      0 0 55px rgba(0, 0, 0, 0.9),
+    text-shadow: 0 0 30px rgba(0, 0, 0, 1), 0 0 55px rgba(0, 0, 0, 0.9),
       0 0 90px rgba(0, 0, 0, 0.8);
   }
 }
+/* 
+body{
+  background-color: black;
+} */

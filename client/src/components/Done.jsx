@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
+import { useTodaysPoints } from "../store/useTodaysPoints";
 
 function Done({ type }) {
-  const { userData ,triggerRefetch} = useUserStore();
-  
+  const { userData, triggerRefetch } = useUserStore();
+  const { setTodays } = useTodaysPoints();
+
   const progressKey =
     type === "daily"
       ? "weeklyProgress"
@@ -20,7 +22,7 @@ function Done({ type }) {
       : type === "monthly"
       ? "yearlyId"
       : "";
-  const handleCheckedTasks = async (userId, id, points, progress,typeId) => {
+  const handleCheckedTasks = async (userId, id, points, progress, typeId) => {
     const response = await fetch(`http://localhost:5000/done/${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -28,8 +30,8 @@ function Done({ type }) {
     });
     const data = await response.json();
     if (response.ok) {
-      alert("Task Completed");
-      triggerRefetch()
+      triggerRefetch();
+      setTodays(points);
     } else {
       alert(data.message || "Operation failed");
     }
@@ -45,8 +47,6 @@ function Done({ type }) {
       ? "monthlies"
       : "yearlies";
   const dataUser = userData[dataType] || [];
-
- 
 
   function submitDone() {
     for (let i = 0; i < dataUser.length; i++) {
@@ -65,7 +65,7 @@ function Done({ type }) {
   return (
     <button
       onClick={() => submitDone()}
-      className={`task-button !bg-gradient-to-r !from-[#dcdcdc] !via-[#f5f5f5] !to-[#a0a0a0]  max-h-14  lg:!w-35 ${
+      className={`task-button !bg-gradient-to-r !from-[#dcdcdc] !via-[#f5f5f5] !to-[#a0a0a0]  h-14  lg:!w-35 ${
         dataUser.some((task) => task.checked) ? "" : "hidden"
       }`}
       //   disabled={!userData.dataType.some((task) => task.checked)}

@@ -34,7 +34,7 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
 
   return (
     <form
-      className="mt-30 text-white flex flex-col space-y-7 border-4 border-[#343536] bg-[#181818] w-80 h-150 rounded-2xl  items-center justify-center lg:w-100"
+      className="mt-30 animate-fade-in-down text-white flex flex-col space-y-7 border-4 border-[#343536] bg-[#181818] w-80 h-150 rounded-2xl  items-center justify-center lg:w-100"
       action=""
       onSubmit={handleLogin}
     >

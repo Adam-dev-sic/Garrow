@@ -49,6 +49,39 @@ export const registerUser = async (req, res) => {
   }
 };
 
+export const todayPoints = async (req, res) => {
+  try {
+    const { points } = req.body;
+    const userId = req.user.id;
+
+    if (points === "reset") {
+      // Reset today's points to 0
+      await prisma.user.update({
+        where: { id: userId },
+        data: { todaysPoints: 0 },
+      });
+      return res.json({ message: "Today's points reset to 0." });
+    }
+    // Update today's points
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { todaysPoints: { increment: Number(points) || 0 } },
+    });
+
+    res.json({
+      message: "Today's points updated.",
+      todaysPoints: user.todaysPoints,
+    });
+  } catch (error) {
+    console.error("Error updating today's points:", error);
+    res.status(500).json({
+      message: `Server error updating today's points. req.body: ${req.body} req.user: ${req.user}`,
+    });
+    console.log("req.body:", req.body);
+    console.log("req.user:", req.user);
+  }
+};
+
 // Login handled by Passport middleware, this runs after successful auth
 export const loginUser = (req, res) => {
   res.json({

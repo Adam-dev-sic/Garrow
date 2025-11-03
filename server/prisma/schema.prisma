@@ -15,16 +15,18 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  email       String    @unique
-  password    String
-  name        String?
-  createdAt   DateTime  @default(now())
-  totalpoints Int       @default(0)
-  dailies     Daily[]
-  weeklies    Weekly[]
-  monthlies   Monthly[]
-  yearlies    Yearly[]
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  password     String
+  name         String?
+  createdAt    DateTime   @default(now())
+  todaysPoints Int        @default(0)
+  totalpoints  Int        @default(0)
+  dailies      Daily[]
+  weeklies     Weekly[]
+  monthlies    Monthly[]
+  yearlies     Yearly[]
+  tasksdone    DoneTask[]
 }
 
 model Daily {
@@ -107,4 +109,17 @@ model Yearly {
   monthlies Monthly[]
   weeklies  Weekly[]
   dailies   Daily[]
+}
+
+model DoneTask {
+  id             Int      @id @default(autoincrement())
+  user           User     @relation(fields: [userId], references: [id])
+  userId         Int
+  type           String // daily, weekly, monthly, yearly
+  goal           String
+  points         Int
+  linkedProgress Int?
+  completedAt    DateTime @default(now())
+  linkedTo       String? // e.g. linked goal id(s)
+  progress       Float? // final progress before completion
 }

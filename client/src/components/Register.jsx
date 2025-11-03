@@ -8,6 +8,7 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
     email: "",
     password: "",
   });
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
@@ -28,9 +29,10 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
       console.error("Error:", err);
     }
   };
+  
   return (
     <form
-      className="mt-30 text-white flex flex-col space-y-7 border-4 border-[#343536] bg-[#181818] w-80 h-150 rounded-2xl  items-center justify-center lg:w-100"
+      className="mt-30 text-white animate-fade-in-down flex flex-col space-y-7 border-4 border-[#343536] bg-[#181818] w-80 h-150 rounded-2xl  items-center justify-center lg:w-100"
       action=""
       onSubmit={handleRegister}
     >

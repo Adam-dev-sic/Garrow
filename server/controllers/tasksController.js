@@ -5,10 +5,11 @@ const prisma = new PrismaClient();
 export const addTask = async (req, res) => {
   try {
     const { id, goal, linked, linkedProgress, points, type } = req.body;
-    if (!id || !goal || !points)
-      res.status(400).json({
+    if (!id || !goal || !points) {
+      return res.status(400).json({
         message: "An error happend, Please fill all the informations",
       });
+    }
 
     const model = prisma[type]; // e.g., prisma.daily or prisma.weekly
 
@@ -188,7 +189,24 @@ export const removeDoneTasks = async (req, res) => {
     if (!model) {
       return res.status(400).json({ message: "Invalid model type." });
     }
+    const goal = await model.findUnique({ where: { id: Number(id) } });
+    if (!goal) return res.status(404).json({ message: "Task not found." });
 
+    await prisma.doneTask.create({
+      data: {
+        user: { connect: { id: Number(userId) } },
+        type,
+        goal: goal.goal,
+        points: goal.points,
+        progress: goal.progress ?? 100,
+        linkedTo: JSON.stringify({
+          weekly: goal.weeklyId,
+          monthly: goal.monthlyId,
+          yearly: goal.yearlyId,
+        }),
+        linkedProgress: progress || 0,
+      },
+    });
     console.log("➡️ Updating user points...");
     await prisma.user.update({
       where: { id: Number(userId) },

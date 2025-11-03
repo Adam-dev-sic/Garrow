@@ -8,7 +8,6 @@ import { useUserStore } from "../store/useUserStore";
 function ParticleBackground() {
   const canvasRef = useRef(null);
   const { userData, retrigger, fetchUserData } = useUserStore();
-  
 
   useEffect(() => {
     fetchUserData();
@@ -67,9 +66,22 @@ function Tasks() {
   const [weeklyOpen, setWeeklyOpen] = useState(false);
   const [monthlyOpen, setMonthlyOpen] = useState(false);
   const [yearlyOpen, setYearlyOpen] = useState(false);
+  const tasksRef = useRef(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tasksRef.current && !tasksRef.current.contains(event.target)) {
+        setDailyOpen(false);
+        setWeeklyOpen(false);
+        setMonthlyOpen(false);
+        setYearlyOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
-    <div className="relative @container bg-[url('/images/wallpaperflare.com_wallpaper.jpg')] bg-cover bg-no-repeat bg-center h-screen flex flex-col space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
+    <div className="relative animate-fade-in @container bg-[url('/images/wallpaperflare.com_wallpaper.jpg')] bg-cover bg-no-repeat bg-center h-screen flex flex-col space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
       <ParticleBackground />
       <div className="flex space-x-10 mt-40 items-center justify-center xl:m-0 xl:mr-80">
         <button
@@ -108,24 +120,34 @@ function Tasks() {
         </button>
       </div>
       {dailyOpen && (
-        
-        <div className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10">
-          
+        <div
+          ref={tasksRef}
+          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
+        >
           <Daily dailyOpen={dailyOpen} setDailyOpen={setDailyOpen} />
         </div>
       )}
       {weeklyOpen && (
-        <div className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10">
+        <div
+          ref={tasksRef}
+          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
+        >
           <Weekly weeklyOpen={weeklyOpen} setWeeklyOpen={setWeeklyOpen} />
         </div>
       )}
       {monthlyOpen && (
-        <div className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10">
+        <div
+          ref={tasksRef}
+          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
+        >
           <Monthly monthlyOpen={monthlyOpen} setMonthlyOpen={setMonthlyOpen} />
         </div>
       )}{" "}
       {yearlyOpen && (
-        <div className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10">
+        <div
+          ref={tasksRef}
+          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
+        >
           <Yearly yearlyOpen={yearlyOpen} setYearlyOpen={setYearlyOpen} />
         </div>
       )}

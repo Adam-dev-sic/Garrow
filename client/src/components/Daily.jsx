@@ -29,12 +29,17 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
       className="flex flex-col w-full space-y-10 min-h-2/3 
      max-h-4/5 overflow-y-auto overflow-x-auto bg-[#020201] border-2 border-white rounded-2xl text-white absolute p-5 lg:w-[70%] lg:min-h-[80%] animate-expand-vertically"
     >
-      <div className="flex w-full text-center justify-between">
+      <div className="flex w-full text-center space-x-2 justify-between">
         <button
           onClick={() => {
-            setFormIsOpen(!formIsOpen), setEditId(null);
+            setFormIsOpen(!formIsOpen),
+              setEditId(null),
+              setGoal(true),
+              setLinked(false),
+              setProgression(false),
+              setPoints(false);
           }}
-          className="task-button h-12 lg:!w-35"
+          className="task-button h-14 lg:!w-35"
         >
           {!formIsOpen ? <h1>New Goals</h1> : <h1>Your Goals</h1>}
         </button>
@@ -42,7 +47,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
 
         <button
           onClick={() => setDailyOpen(!dailyOpen)}
-          className="task-button h-12 lg:!w-35"
+          className="task-button h-14 lg:!w-35"
         >
           Close
         </button>
@@ -80,7 +85,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
               >
                 Linked with
               </h1>
-              <h1
+              {/* <h1
                 onClick={() => {
                   setGoal(false);
                   setLinked(false);
@@ -110,7 +115,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
                 }`}
               >
                 Points
-              </h1>
+              </h1> */}
             </div>
 
             <GoalsData

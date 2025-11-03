@@ -2,7 +2,11 @@
 
 import express from "express";
 import passport from "passport";
-import { registerUser, loginUser } from "../controllers/authController.js";
+import {
+  registerUser,
+  loginUser,
+  todayPoints,
+} from "../controllers/authController.js";
 import { PrismaClient } from "../generated/prisma/index.js";
 
 const router = express.Router();
@@ -14,6 +18,7 @@ const prisma = new PrismaClient();
  */
 router.post("/register", registerUser);
 
+router.post("/today", todayPoints);
 /**
  * Login
  * - Uses Passport Local strategy to authenticate
@@ -60,9 +65,9 @@ router.get("/me", async (req, res) => {
   if (!req.user) return res.status(401).json({ message: "Not authenticated" });
 
   try {
-     const user = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      include: { 
+      include: {
         dailies: true,
         weeklies: {
           include: {
@@ -82,6 +87,7 @@ router.get("/me", async (req, res) => {
             monthlies: true,
           },
         },
+        tasksdone: { include: true },
       },
     });
     if (!user) return res.status(404).json({ message: "User not found" });
