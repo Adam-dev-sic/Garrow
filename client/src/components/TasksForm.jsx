@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Linked from "./Linked";
 import { useUserStore } from "../store/useUserStore";
+import { apiFetch } from "../utils/api";
 
 function TasksForm({
   goal,
@@ -127,7 +128,7 @@ function TasksForm({
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/delete/${type}`, {
+      const response = await apiFetch(`/delete/${type}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ editId }),
@@ -158,7 +159,7 @@ function TasksForm({
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/edit/${type}`, {
+      const response = await apiFetch(`/edit/${type}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...taskData, editId, formProgress }),
@@ -231,7 +232,7 @@ function TasksForm({
             type: task.type || type,
           };
 
-          const response = await fetch("http://localhost:5000/add", {
+          const response = await apiFetch(`/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(sendData),

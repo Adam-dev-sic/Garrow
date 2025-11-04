@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { apiFetch } from "../utils/api";
 
 export const useUserStore = create((set, get) => ({
   userData: null,
@@ -7,10 +8,10 @@ export const useUserStore = create((set, get) => ({
 
   fetchUserData: async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/me", {
+      const res = await apiFetch("/api/auth/me", {
         credentials: "include",
       });
-  
+
       if (!res.ok) throw new Error("Failed to fetch user");
       const data = await res.json();
       const sortedUser = {

@@ -54,14 +54,11 @@ function GoalsData({
     console.log(isChecked, goalId);
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/goals/${type}/check`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ goalId: goalId, isChecked }),
-        }
-      );
+      const response = await apiFetch(`/goals/${type}/check`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ goalId: goalId, isChecked }),
+      });
 
       const data = await response.json();
       if (response.ok) {

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useTodaysPoints } from "../store/useTodaysPoints";
+import { apiFetch } from "../utils/api";
 
 function Done({ type }) {
   const { userData, triggerRefetch } = useUserStore();
@@ -30,7 +31,7 @@ function Done({ type }) {
     typeId,
     uuid
   ) => {
-    const response = await fetch(`http://localhost:5000/done/${type}`, {
+    const response = await apiFetch(`done/${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),

@@ -1,14 +1,16 @@
 // /store/useTodaysPoints.js
 import { create } from "zustand";
+import { apiFetch } from "../utils/api";
 
 export const useTodaysPoints = create((set, get) => ({
   setTodays: async (points) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/today", {
+      const response = await apiFetch("/api/auth/today", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ points }),
+        
       });
       const data = await response.json();
       if (!response.ok) {

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { apiFetch } from "../utils/api";
 
 function Register({ hovered, setHovered, setRegistered, setActive, active }) {
   const [formData, setFormData] = useState({
@@ -9,10 +10,11 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
     password: "",
   });
   
+
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await apiFetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -29,7 +31,7 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
       console.error("Error:", err);
     }
   };
-  
+
   return (
     <form
       className="mt-30 text-white animate-fade-in-down flex flex-col space-y-7 border-4 border-[#343536] bg-[#181818] w-80 h-150 rounded-2xl  items-center justify-center lg:w-100"

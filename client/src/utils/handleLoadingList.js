@@ -1,4 +1,5 @@
 import { useUserStore } from "../store/useUserStore";
+import { apiFetch } from "./api";
 
 export const handleLoadingList = async ({
   userData,
@@ -48,7 +49,7 @@ export const handleLoadingList = async ({
         type: task.type,
       };
 
-      const response = await fetch("http://localhost:5000/add", {
+      const response = await apiFetch("/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sendData),

@@ -2,18 +2,20 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
+import { apiFetch } from "../utils/api";
 function Login({ hovered, setHovered, setRegistered, setActive, active }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await apiFetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport

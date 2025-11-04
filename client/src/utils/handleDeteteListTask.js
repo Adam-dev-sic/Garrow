@@ -1,7 +1,9 @@
-export const handleDeteteListTask = async ({ type, id ,fetchUserData}) => {
+import { apiFetch } from "./api";
+
+export const handleDeteteListTask = async ({ type, id, fetchUserData }) => {
   try {
     console.log(id, type);
-    const response = await fetch(`http://localhost:5000/delete/${type}`, {
+    const response = await apiFetch(`/delete/${type}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
