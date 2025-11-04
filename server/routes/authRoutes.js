@@ -88,6 +88,7 @@ router.get("/me", async (req, res) => {
           },
         },
         tasksdone: { include: true },
+        savedtaskslist: { include: { savedtasks: true } },
       },
     });
     if (!user) return res.status(404).json({ message: "User not found" });

@@ -16,17 +16,24 @@ function Done({ type }) {
       : "";
   const progressId =
     type === "daily"
-      ? "weeklyId"
+      ? "weeklyUuid"
       : type === "weekly"
-      ? "monthlyId"
+      ? "monthlyUuid"
       : type === "monthly"
-      ? "yearlyId"
+      ? "yearlyUuid"
       : "";
-  const handleCheckedTasks = async (userId, id, points, progress, typeId) => {
+  const handleCheckedTasks = async (
+    userId,
+    id,
+    points,
+    progress,
+    typeId,
+    uuid
+  ) => {
     const response = await fetch(`http://localhost:5000/done/${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, id, points, progress, typeId }),
+      body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),
     });
     const data = await response.json();
     if (response.ok) {
@@ -56,7 +63,8 @@ function Done({ type }) {
           dataUser[i].id,
           dataUser[i].points,
           dataUser[i][progressKey],
-          dataUser[i][progressId]
+          dataUser[i][progressId],
+          dataUser[i].uuid
         );
       }
     }

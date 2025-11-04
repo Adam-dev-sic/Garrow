@@ -13,22 +13,16 @@ function Linked({
   const [weeklyProgress, setWeeklyProgress] = useState(false);
   const [monthlyProgress, setMonthlyProgress] = useState(false);
   const [yearlyProgress, setYearlyProgress] = useState(false);
-
   useEffect(() => {
     if (type === "daily") {
-      if (formLinksIds.weekly >= 1) {
-        setWeeklyProgress(true);
-      } else setWeeklyProgress(false);
+      setWeeklyProgress(!!formLinksIds.weekly); // true if uuid exists
     } else if (type === "weekly") {
-      if (formLinksIds.monthly >= 1) {
-        setMonthlyProgress(true);
-      } else setMonthlyProgress(false);
+      setMonthlyProgress(!!formLinksIds.monthly);
     } else {
-      if (formLinksIds.yearly >= 1) {
-        setYearlyProgress(true);
-      } else setYearlyProgress(false);
+      setYearlyProgress(!!formLinksIds.yearly);
     }
-  }, [formLinksIds]);
+  }, [formLinksIds, type]);
+
   return (
     <div className="w-full">
       <>
@@ -62,9 +56,9 @@ function Linked({
               {userData.weeklies.map((weekly) => {
                 return (
                   <option
-                    key={weekly.id}
+                    key={weekly.uuid}
                     className="text-white text-lg"
-                    value={weekly.id}
+                    value={weekly.uuid}
                   >
                     {weekly.goal}
                   </option>
@@ -121,9 +115,9 @@ function Linked({
               {userData.monthlies.map((monthly) => {
                 return (
                   <option
-                    key={monthly.id}
+                    key={monthly.uuid}
                     className="text-white text-lg"
-                    value={monthly.id}
+                    value={monthly.uuid}
                   >
                     {monthly.goal}
                   </option>
@@ -177,9 +171,9 @@ function Linked({
               {userData.yearlies.map((yearly) => {
                 return (
                   <option
-                    key={yearly.id}
+                    key={yearly.uuid}
                     className="text-white text-lg"
-                    value={yearly.id}
+                    value={yearly.uuid}
                   >
                     {yearly.goal}
                   </option>

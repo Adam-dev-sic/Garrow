@@ -123,6 +123,9 @@ function Tasks() {
         <div
           ref={tasksRef}
           className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
+          onClick={() => {
+            setDailyOpen(!dailyOpen);
+          }}
         >
           <Daily dailyOpen={dailyOpen} setDailyOpen={setDailyOpen} />
         </div>
@@ -130,6 +133,9 @@ function Tasks() {
       {weeklyOpen && (
         <div
           ref={tasksRef}
+          onClick={() => {
+            setWeeklyOpen(!weeklyOpen);
+          }}
           className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
         >
           <Weekly weeklyOpen={weeklyOpen} setWeeklyOpen={setWeeklyOpen} />
@@ -137,7 +143,9 @@ function Tasks() {
       )}
       {monthlyOpen && (
         <div
-          ref={tasksRef}
+          onClick={() => {
+            setMonthlyOpen(!monthlyOpen);
+          }}
           className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
         >
           <Monthly monthlyOpen={monthlyOpen} setMonthlyOpen={setMonthlyOpen} />
@@ -146,6 +154,9 @@ function Tasks() {
       {yearlyOpen && (
         <div
           ref={tasksRef}
+          onClick={() => {
+            setYearlyOpen(!yearlyOpen);
+          }}
           className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
         >
           <Yearly yearlyOpen={yearlyOpen} setYearlyOpen={setYearlyOpen} />

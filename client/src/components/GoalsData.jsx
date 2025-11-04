@@ -59,7 +59,7 @@ function GoalsData({
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ goalId, isChecked }),
+          body: JSON.stringify({ goalId: goalId, isChecked }),
         }
       );
 
@@ -97,55 +97,55 @@ function GoalsData({
 
             if (type === "daily") {
               linkedWeekly = userData.weeklies.find(
-                (w) => w.id === goalType.weeklyId
+                (w) => w.uuid === goalType.weeklyUuid
               );
               linkedMonthly = userData.monthlies.find(
-                (m) => m.id === goalType.monthlyId
+                (m) => m.uuid === goalType.monthlyUuid
               );
               linkedYearly = userData.yearlies.find(
-                (y) => y.id === goalType.yearlyId
+                (y) => y.uuid === goalType.yearlyUuid
               );
             } else if (type === "weekly") {
               linkedDaily = goalType.dailies.map((connectedDailies, index) => (
-                <React.Fragment key={connectedDailies.id || index}>
+                <React.Fragment key={connectedDailies.uuid || index}>
                   {connectedDailies.goal}
                   <br />
                 </React.Fragment>
               ));
               linkedMonthly = userData.monthlies.find(
-                (m) => m.id === goalType.monthlyId
+                (m) => m.uuid === goalType.monthlyUuid
               );
               linkedYearly = userData.yearlies.find(
-                (y) => y.id === goalType.yearlyId
+                (y) => y.uuid === goalType.yearlyUuid
               );
             } else if (type === "monthly") {
               linkedDaily = goalType.dailies.map((connectedDailies, index) => (
-                <React.Fragment key={connectedDailies.id || index}>
+                <React.Fragment key={connectedDailies.uuid || index}>
                   {connectedDailies.goal}
                   <br />
                 </React.Fragment>
               ));
               linkedWeekly = goalType.weeklies.map(
                 (connectedDailies, index) => (
-                  <React.Fragment key={connectedDailies.id || index}>
+                  <React.Fragment key={connectedDailies.uuid || index}>
                     {connectedDailies.goal}
                     <br />
                   </React.Fragment>
                 )
               );
               linkedYearly = userData.yearlies.find(
-                (y) => y.id === goalType.yearlyId
+                (y) => y.uuid === goalType.yearlyUuid
               );
             } else if (type === "yearly") {
               linkedDaily = goalType.dailies.map((connectedDailies, index) => (
-                <React.Fragment key={connectedDailies.id || index}>
+                <React.Fragment key={connectedDailies.uuid || index}>
                   {connectedDailies.goal}
                   <br />
                 </React.Fragment>
               ));
               linkedWeekly = goalType.weeklies.map(
                 (connectedDailies, index) => (
-                  <React.Fragment key={connectedDailies.id || index}>
+                  <React.Fragment key={connectedDailies.uuid || index}>
                     {connectedDailies.goal}
                     <br />
                   </React.Fragment>
@@ -153,7 +153,7 @@ function GoalsData({
               );
               linkedMonthly = goalType.monthlies.map(
                 (connectedDailies, index) => (
-                  <React.Fragment key={connectedDailies.id || index}>
+                  <React.Fragment key={connectedDailies.uuid || index}>
                     {connectedDailies.goal}
                     <br />
                   </React.Fragment>
@@ -380,55 +380,55 @@ function GoalsData({
 
             if (type === "daily") {
               linkedWeekly = userData.weeklies.find(
-                (w) => w.id === goalType.weeklyId
+                (w) => w.uuid === goalType.weeklyUuid
               );
               linkedMonthly = userData.monthlies.find(
-                (m) => m.id === goalType.monthlyId
+                (m) => m.uuid === goalType.monthlyUuid
               );
               linkedYearly = userData.yearlies.find(
-                (y) => y.id === goalType.yearlyId
+                (y) => y.uuid === goalType.yearlyUuid
               );
             } else if (type === "weekly") {
               linkedDaily = goalType.dailies.map((connectedDailies, index) => (
-                <React.Fragment key={connectedDailies.id || index}>
+                <React.Fragment key={connectedDailies.uuid || index}>
                   {connectedDailies.goal}
                   <br />
                 </React.Fragment>
               ));
               linkedMonthly = userData.monthlies.find(
-                (m) => m.id === goalType.monthlyId
+                (m) => m.uuid === goalType.monthlyUuid
               );
               linkedYearly = userData.yearlies.find(
-                (y) => y.id === goalType.yearlyId
+                (y) => y.uuid === goalType.yearlyUuid
               );
             } else if (type === "monthly") {
               linkedDaily = goalType.dailies.map((connectedDailies, index) => (
-                <React.Fragment key={connectedDailies.id || index}>
+                <React.Fragment key={connectedDailies.uuid || index}>
                   {connectedDailies.goal}
                   <br />
                 </React.Fragment>
               ));
               linkedWeekly = goalType.weeklies.map(
                 (connectedDailies, index) => (
-                  <React.Fragment key={connectedDailies.id || index}>
+                  <React.Fragment key={connectedDailies.uuid || index}>
                     {connectedDailies.goal}
                     <br />
                   </React.Fragment>
                 )
               );
               linkedYearly = userData.yearlies.find(
-                (y) => y.id === goalType.yearlyId
+                (y) => y.uuid === goalType.yearlyUuid
               );
             } else if (type === "yearly") {
               linkedDaily = goalType.dailies.map((connectedDailies, index) => (
-                <React.Fragment key={connectedDailies.id || index}>
+                <React.Fragment key={connectedDailies.uuid || index}>
                   {connectedDailies.goal}
                   <br />
                 </React.Fragment>
               ));
               linkedWeekly = goalType.weeklies.map(
                 (connectedDailies, index) => (
-                  <React.Fragment key={connectedDailies.id || index}>
+                  <React.Fragment key={connectedDailies.uuid || index}>
                     {connectedDailies.goal}
                     <br />
                   </React.Fragment>
@@ -436,7 +436,7 @@ function GoalsData({
               );
               linkedMonthly = goalType.monthlies.map(
                 (connectedDailies, index) => (
-                  <React.Fragment key={connectedDailies.id || index}>
+                  <React.Fragment key={connectedDailies.uuid || index}>
                     {connectedDailies.goal}
                     <br />
                   </React.Fragment>
@@ -445,7 +445,7 @@ function GoalsData({
             }
             return (
               <div
-                key={goalType.id}
+                key={goalType.uuid}
                 className="flex rounded-lg flex-shrink-0 has-[input:checked]:border-0 has-[input:checked]:shadow-[0_0_9px_4px_rgba(255,255,255,0.8)]  p-5 bg-[#181818] items-start border-b-2 overflow-x-auto overflow-y-visible font-bold h-30 space-x-10 w-full border-b-white"
               >
                 {goal ? (
@@ -519,6 +519,19 @@ function GoalsData({
                       >
                         Points: {goalType.points}
                       </h1>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditId(goalType.id),
+                            console.log("Editing goal with ID:", goalType.id),
+                            setFormIsOpen(true);
+                        }}
+                        className="!h-12 cursor-pointer next-button"
+                      >
+                        Edit
+                      </button>
                     </div>
                   </div>
                 ) : linked ? (

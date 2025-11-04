@@ -1,7 +1,7 @@
+// src/components/TasksForm.jsx
 import React, { useEffect, useState } from "react";
 import Linked from "./Linked";
 import { useUserStore } from "../store/useUserStore";
-import { use } from "react";
 
 function TasksForm({
   goal,
@@ -22,7 +22,7 @@ function TasksForm({
   const { userData, fetchUserData } = useUserStore();
   const [formGoal, setFormGoal] = useState("");
   const [formLinksIds, setFormLinksIds] = useState({
-    weekly: "",
+    weekly: "", // will store weekly UUID
     monthly: "",
     yearly: "",
   });
@@ -56,37 +56,50 @@ function TasksForm({
         setFormGoal(itemToEdit.goal || "");
         setFormPoints(itemToEdit.points || "");
         if (type !== "yearly") {
+          // Use the exact Prisma field names returned by the backend
           setFormLinksIds({
-            weekly: itemToEdit.weeklyId || "",
-            monthly: itemToEdit.monthlyId || "",
-            yearly: itemToEdit.yearlyId || "",
+            weekly: itemToEdit.weeklyUuid || "",
+            monthly: itemToEdit.monthlyUuid || "",
+            yearly: itemToEdit.yearlyUuid || "",
           });
-          setFormLinkedPoints(itemToEdit[progressKey] || "");
-          setFormProgress(itemToEdit.progress || "");
+          setFormLinkedPoints(itemToEdit[progressKey] ?? "");
+          setFormProgress(itemToEdit.progress ?? "");
         }
       }
     } else {
       setFormGoal("");
       setFormPoints("");
-      setFormLinksIds({
-        weekly: "",
-        monthly: "",
-        yearly: "",
-      });
+      setFormLinksIds({ weekly: "", monthly: "", yearly: "" });
       setFormLinkedPoints("");
       setFormProgress("");
     }
   }, [editId, iterationValue, type, progressKey]);
+
   useEffect(() => {
     setTaskData({
       id: userData.id,
       goal: formGoal,
-      linked: formLinksIds,
+      // send uuid strings to backend as linked values
+      linked: {
+        weekly: formLinksIds.weekly,
+        monthly: formLinksIds.monthly,
+        yearly: formLinksIds.yearly,
+      },
       linkedProgress: formLinkedPoints,
       points: formPoints,
       type: type,
     });
-  }, [userData.id, formGoal, formLinksIds, formLinkedPoints, formPoints, type]);
+  }, [
+    userData.id,
+    formGoal,
+    formLinksIds.weekly,
+    formLinksIds.monthly,
+    formLinksIds.yearly,
+    formLinkedPoints,
+    formPoints,
+    type,
+  ]);
+
   const handleSubmission = async (e) => {
     e.preventDefault();
     try {
@@ -100,13 +113,14 @@ function TasksForm({
         alert("Task Added");
         setFormIsOpen(false);
         fetchUserData();
+        setLinked(false);
+        setGoal(true);
       } else {
         alert(data.message || "Registration failed");
       }
-
-      if (!response) alert("error happend");
     } catch (error) {
-      alert(error);
+      console.error("Submission error:", error);
+      alert("An error occurred");
     }
   };
 
@@ -123,18 +137,24 @@ function TasksForm({
         alert("Task Deleted");
         setFormIsOpen(false);
         fetchUserData();
+        setLinked(false);
+        setGoal(true);
       } else {
         alert(data.message || "Delete failed");
       }
-
-      if (!response) alert("error happend");
     } catch (error) {
-      alert(error);
+      console.error("Delete error:", error);
+      alert("An error occurred");
     }
   };
+
   const formatDate = (date) => {
-    return date.toISOString().split("T")[0]; // "YYYY-MM-DD"
+    if (!date) return "";
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return "";
+    return d.toISOString().split("T")[0]; // "YYYY-MM-DD"
   };
+
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
@@ -148,23 +168,26 @@ function TasksForm({
         alert("Task Edited");
         setFormIsOpen(false);
         fetchUserData();
+        setLinked(false);
+        setGoal(true);
       } else {
         alert(data.message || "Edit failed");
       }
-
-      if (!response) alert("error happend");
     } catch (error) {
-      alert(error);
+      console.error("Edit error:", error);
+      alert("An error occurred");
     }
   };
+
   const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setDate(yesterday.getDate());
   const twoDaysAgo = new Date();
-  twoDaysAgo.setDate(twoDaysAgo.getDate());
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2); // FIXED: subtract 2
 
   const [selectedDate, setSelectedDate] = useState("");
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
   const handleAddedTasks = async (date) => {
     try {
       console.log("🧩 Running handleAddedTasks with:", date);
@@ -172,28 +195,36 @@ function TasksForm({
       const doneTasks = userData.tasksdone || [];
 
       if (doneTasks.length === 0) {
-        console.warn("⚠️ No doneTasks found in userData");
-        alert("You have no tasks done in the selected time");
+        console.warn("⚠️ No tasksdone found in userData");
+        alert("You have no completed tasks to restore");
+        return;
+      }
+
+      const restoreDate = formatDate(date);
+      if (!restoreDate) {
+        alert("Invalid date selected");
         return;
       }
 
       for (const task of doneTasks) {
-        console.log("Checking task:", task.goal, task.completedAt);
-
         if (!task.completedAt) continue;
 
-        const taskCompletedAt = formatDate(new Date(task.completedAt));
-        console.log("Comparing:", taskCompletedAt, "vs", date);
+        const taskCompletedAt = formatDate(task.completedAt);
+        console.log("Comparing:", taskCompletedAt, "vs", restoreDate);
 
-        if (taskCompletedAt === date) {
+        if (taskCompletedAt === restoreDate) {
           console.log("✅ Match found for:", task.goal);
-          const taskData = {
+
+          const sendData = {
             id: userData.id,
             goal: task.goal,
+            uuid: task.uuid,
             linked: {
-              weekly: task.linkedTo?.weekly || "",
-              monthly: task.linkedTo?.monthly || "",
-              yearly: task.linkedTo?.yearly || "",
+              // Expecting doneTask.linkedTo to be JSON (strings of UUIDs) — parse safely
+              weekly: (task.linkedTo && JSON.parse(task.linkedTo).weekly) || "",
+              monthly:
+                (task.linkedTo && JSON.parse(task.linkedTo).monthly) || "",
+              yearly: (task.linkedTo && JSON.parse(task.linkedTo).yearly) || "",
             },
             linkedProgress: task.linkedProgress || 0,
             points: task.points || 0,
@@ -203,24 +234,26 @@ function TasksForm({
           const response = await fetch("http://localhost:5000/add", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(taskData),
+            body: JSON.stringify(sendData),
           });
 
           const data = await response.json();
           if (response.ok) {
             console.log(`✅ Re-added task: ${task.goal}`);
-
             setFormIsOpen(false);
           } else {
-            console.warn(`❌ Failed to re-add ${task.goal}:`, data.message);
+            console.warn(`❌ Failed to re-add ${task.goal}:`, data.error);
+            alert(data.message);
           }
         } else {
           console.log("No match for:", task.goal);
         }
       }
+
       fetchUserData();
     } catch (err) {
       console.error("Error re-adding tasks:", err);
+      alert("An error occurred while restoring tasks");
     }
   };
 
@@ -238,13 +271,13 @@ function TasksForm({
             setProgression(false);
             setPoints(false);
           }}
-          className={`w-[25%] flex-shrink-0 text-lg ${
+          className={`w-[40%] text-center flex-shrink-0 text-lg ${
             goal ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
           }`}
         >
           Goal
         </h1>
-        {type != "yearly" && (
+        {type !== "yearly" && (
           <h1
             onClick={() => {
               setGoal(false);
@@ -252,7 +285,7 @@ function TasksForm({
               setProgression(false);
               setPoints(false);
             }}
-            className={`w-[25%] flex-shrink-0 text-lg ${
+            className={`w-[40%] text-center flex-shrink-0 text-lg ${
               linked ? "underline !text-2xl lg:!no-underline lg:!text-lg" : ""
             }`}
           >
@@ -260,21 +293,6 @@ function TasksForm({
           </h1>
         )}
         {/* <h1
-              onClick={() => {
-                setGoal(false);
-                setLinked(false);
-                setProgression(true);
-                setPoints(false);
-              }}
-              className={`w-[33.33%] flex-shrink-0 text-lg ${
-                progression
-                  ? "underline !text-2xl lg:!no-underline lg:!text-lg"
-                  : ""
-              }`}
-            >
-              Progression W
-            </h1> */}
-        <h1
           onClick={() => {
             setGoal(false);
             setLinked(false);
@@ -286,74 +304,104 @@ function TasksForm({
           }`}
         >
           Points
-        </h1>
+        </h1> */}
       </div>
+
+      <div />
       {isMobile ? (
-        goal ? (
-          <div className="flex flex-col items-center justify-center mt-25 space-y-2">
-            <label htmlFor="Goal">
-              <h1 className="text-lg">Write Down Your Goal</h1>
-            </label>
-            <input
-              type="text"
-              className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-2xl p-3 z-50 focus:bg-[#251f19] lg:w-1/2"
-              value={formGoal}
-              onChange={(e) => setFormGoal(e.target.value)}
-            />
-            <button
-              onClick={() => {
-                setGoal(false);
-                setLinked(true);
-                setPoints(false);
-              }}
-              type=""
-              className="next-button w-30 mt-5 h-10 !rounded-full"
-            >
-              Next
-            </button>
-          </div>
-        ) : linked ? (
-          <div className="flex flex-col items-center justify-center mt-10 space-y-2">
-            <Linked
-              type={type}
-              setFormLinksIds={setFormLinksIds}
-              formLinksIds={formLinksIds}
-              formLinkedPoints={formLinkedPoints}
-              setFormLinkedPoints={setFormLinkedPoints}
-            />
-            <button
-              onClick={() => {
-                setGoal(false);
-                setLinked(false);
-                setPoints(true);
-              }}
-              className="next-button w-30 mt-5 h-10 !rounded-full"
-            >
-              Next
-            </button>
-          </div>
-        ) : point ? (
-          <div className="flex flex-col items-center justify-center mt-25 space-y-2">
-            <label htmlFor="Goal">
-              <h1 className="text-lg">Points reward</h1>
-            </label>
-            <input
-              type="text"
-              name="points"
-              className="bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2"
-              value={formPoints}
-              onChange={(e) => setFormPoints(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="next-button w-30 mt-5 h-12 !rounded-full"
-            >
-              {editId ? "Edit Goal" : "Submit Goal"}
-            </button>
-          </div>
-        ) : (
-          ""
-        )
+        <>
+          {!linked ? (
+            <>
+              <div className="flex justify-between space-x-10 mt-10 p-10">
+                <div
+                  className={`w-[100%] space-y-8 flex flex-col items-center justify-center ${
+                    type === "yearly" ? "!w-[100%] px-50" : ""
+                  }`}
+                >
+                  <div className="flex w-full flex-col items-center justify-center mt-10 space-y-2">
+                    <label htmlFor="goal">
+                      <h1 className="text-lg">Write Down Your Goal</h1>
+                    </label>
+                    <input
+                      type="text"
+                      name="goal"
+                      value={formGoal}
+                      onChange={(e) => setFormGoal(e.target.value)}
+                      className="bg-gradient-to-r from-white mini-animation via-[#ebebeb] to-[#bdbdbd] text-black w-[85%] h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f5f5f5]"
+                    />
+                  </div>
+
+                  {/* Points / Progress inputs and submit */}
+                  <div className="w-full items-center justify-center space-x-2.5 flex ">
+                    {editId ? (
+                      <div className="flex space-x-6 w-full items-center justify-center">
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                          <label htmlFor="points">
+                            <h1 className="text-lg">Progress Bar %</h1>
+                          </label>
+                          <input
+                            type="text"
+                            value={formProgress}
+                            onChange={(e) => setFormProgress(e.target.value)}
+                            className="bg-gradient-to-r mini-animation rounded-full from-white via-[#d8d8d8] to-[#a0a0a0] text-black max-w-35 h-12 text-lg  p-3 z-50 focus:bg-[#e6e6e6]"
+                          />
+                        </div>
+                      </div>
+                    ) : null}
+                    <div className="flex space-x-6 w-full items-center justify-center">
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <label htmlFor="points">
+                          <h1 className="text-lg">Points reward</h1>
+                        </label>
+                        <input
+                          type="text"
+                          value={formPoints}
+                          onChange={(e) => setFormPoints(e.target.value)}
+                          className="bg-gradient-to-r mini-animation from-white via-[#d8d8d8] to-[#a0a0a0] text-black max-w-35 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#e6e6e6]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGoal(false), setLinked(true);
+                    }}
+                    className="next-button"
+                  >
+                    Next
+                  </button>
+
+                  {editId && (
+                    <button className="delete-button" onClick={handleDelete}>
+                      Delete Task
+                    </button>
+                  )}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {type !== "yearly" && (
+                <div className="flex flex-col w-[100%] items-center justify-center mt-10 space-y-2">
+                  <Linked
+                    type={type}
+                    setFormLinksIds={(newLinks) =>
+                      setFormLinksIds((s) => ({ ...s, ...newLinks }))
+                    }
+                    formLinksIds={formLinksIds}
+                    formLinkedPoints={formLinkedPoints}
+                    setFormLinkedPoints={setFormLinkedPoints}
+                  />
+                  <button className="next-button" type="submit">
+                    {editId ? "Edit Goal" : "Submit Goal"}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </>
       ) : (
         <div className="flex justify-between space-x-10 mt-10 p-10">
           <div
@@ -361,34 +409,6 @@ function TasksForm({
               type === "yearly" ? "!w-[100%] px-50" : ""
             }`}
           >
-            <select
-              onChange={(e) => setSelectedDate(e.target.value)}
-              name="date"
-              id=""
-            >
-              <option value="">None</option>
-              <option value={formatDate(yesterday)}>Yesterday's tasks</option>
-              <option value={formatDate(twoDaysAgo)}>2 Days Ago</option>
-              <option value={formatDate(threeDaysAgo)}>
-                {formatDate(threeDaysAgo)}
-              </option>
-            </select>
-            <button
-              id="addOldTasks"
-              className="next-button"
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                if (!selectedDate) {
-                  alert("Please select a date first");
-                  return;
-                }
-                handleAddedTasks(selectedDate);
-              }}
-            >
-              Submit
-            </button>
-
             <div className="flex w-full flex-col items-center justify-center mt-10 space-y-2">
               <label htmlFor="goal">
                 <h1 className="text-lg">Write Down Your Goal</h1>
@@ -398,17 +418,11 @@ function TasksForm({
                 name="goal"
                 value={formGoal}
                 onChange={(e) => setFormGoal(e.target.value)}
-                // className="bg-gradient-to-r from-white via-[#f2f2f2] to-[#d9d9d9] text-black w-[85%] h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f7f7f7]"
-                // className="bg-gradient-to-r from-white via-white to-[#f0f0f0] text-black w-[85%] h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#fafafa]"
-                // className="bg-gradient-to-r from-white via-[#f2f2f2] to-[#d9d9d9] text-black w-[85%] h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f7f7f7]"
                 className="bg-gradient-to-r from-white mini-animation via-[#ebebeb] to-[#bdbdbd] text-black w-[85%] h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f5f5f5]"
-                // className="bg-gradient-to-r from-[#ffffff] via-[#f7f7f7] to-[#e2e2e2] text-black w-[85%] h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f8f8f8]"
-
-                // className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] h-12 text-lg w-full rounded-lg p-3 z-50 focus:bg-[#251f19] w-full"
               />
-              {/*
-               */}
             </div>
+
+            {/* Points / Progress inputs and submit */}
             <div className="w-full flex ">
               {editId ? (
                 <div className="flex space-x-6 w-full items-center justify-center">
@@ -418,13 +432,9 @@ function TasksForm({
                     </label>
                     <input
                       type="text"
-                      // className="bg-gradient-to-r from-[#f5f5f5] via-[#cfcfcf] to-[#9b9b9b] text-black w-50 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#dcdcdc]"
-                      className="bg-gradient-to-r mini-animation rounded-full from-white via-[#d8d8d8] to-[#a0a0a0] text-black max-w-35 h-12 text-lg  p-3 z-50 focus:bg-[#e6e6e6]"
-                      // className="bg-gradient-to-r from-[#d9d9d9] via-[#a6a6a6] to-[#6e6e6e] text-white w-50 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#8c8c8c]"
-                      // className="bg-gradient-to-r from-white via-[#f2f2f2] to-[#d9d9d9] text-black w-50 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f7f7f7]"
-                      value={formProgress} // controlled input
+                      value={formProgress}
                       onChange={(e) => setFormProgress(e.target.value)}
-                      // className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] w-50 h-12 text-lg  rounded-lg p-3 z-50 focus:bg-[#251f19]"
+                      className="bg-gradient-to-r mini-animation rounded-full from-white via-[#d8d8d8] to-[#a0a0a0] text-black max-w-35 h-12 text-lg  p-3 z-50 focus:bg-[#e6e6e6]"
                     />
                   </div>
                 </div>
@@ -436,20 +446,15 @@ function TasksForm({
                   </label>
                   <input
                     type="text"
-                    // className="bg-gradient-to-r from-[#f5f5f5] via-[#cfcfcf] to-[#9b9b9b] text-black w-50 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#dcdcdc]"
-                    className="bg-gradient-to-r mini-animation from-white via-[#d8d8d8] to-[#a0a0a0] text-black max-w-35 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#e6e6e6]"
-                    // className="bg-gradient-to-r from-[#d9d9d9] via-[#a6a6a6] to-[#6e6e6e] text-white w-50 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#8c8c8c]"
-                    // className="bg-gradient-to-r from-white via-[#f2f2f2] to-[#d9d9d9] text-black w-50 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#f7f7f7]"
-                    value={formPoints} // controlled input
+                    value={formPoints}
                     onChange={(e) => setFormPoints(e.target.value)}
-                    // className="bg-gradient-to-r from-white via-[#a8a8a8] text-black to-[#282727] w-50 h-12 text-lg  rounded-lg p-3 z-50 focus:bg-[#251f19]"
+                    className="bg-gradient-to-r mini-animation from-white via-[#d8d8d8] to-[#a0a0a0] text-black max-w-35 h-12 text-lg rounded-lg p-3 z-50 focus:bg-[#e6e6e6]"
                   />
                 </div>
               </div>
             </div>
 
-            <button className="next-button">
-              {" "}
+            <button className="next-button" type="submit">
               {editId ? "Edit Goal" : "Submit Goal"}
             </button>
 
@@ -459,11 +464,14 @@ function TasksForm({
               </button>
             )}
           </div>
-          {type != "yearly" && (
+
+          {type !== "yearly" && (
             <div className="flex flex-col w-[45%] items-center justify-center mt-10 space-y-2">
               <Linked
                 type={type}
-                setFormLinksIds={setFormLinksIds}
+                setFormLinksIds={(newLinks) =>
+                  setFormLinksIds((s) => ({ ...s, ...newLinks }))
+                }
                 formLinksIds={formLinksIds}
                 formLinkedPoints={formLinkedPoints}
                 setFormLinkedPoints={setFormLinkedPoints}

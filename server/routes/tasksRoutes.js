@@ -8,6 +8,7 @@ import {
   addTask,
   deleteTasks,
   removeDoneTasks,
+  saveTask,
 } from "../controllers/tasksController.js";
 import { checkGoal } from "../controllers/tasksController.js";
 import { editTasks } from "../controllers/tasksController.js";
@@ -20,6 +21,7 @@ router.post("/goals/:type/check", checkGoal);
 router.post("/done/:type", removeDoneTasks);
 router.put("/edit/:type", editTasks);
 router.delete("/delete/:type", deleteTasks);
+router.post("/save", saveTask);
 
 router.get("/hello", (req, res) => {
   res.status(500).json("hello");

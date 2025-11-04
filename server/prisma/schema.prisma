@@ -15,25 +15,27 @@ datasource db {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  email        String     @unique
-  password     String
-  name         String?
-  createdAt    DateTime   @default(now())
-  todaysPoints Int        @default(0)
-  totalpoints  Int        @default(0)
-  dailies      Daily[]
-  weeklies     Weekly[]
-  monthlies    Monthly[]
-  yearlies     Yearly[]
-  tasksdone    DoneTask[]
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  password       String
+  name           String?
+  createdAt      DateTime        @default(now())
+  todaysPoints   Int             @default(0)
+  totalpoints    Int             @default(0)
+  dailies        Daily[]
+  weeklies       Weekly[]
+  monthlies      Monthly[]
+  yearlies       Yearly[]
+  tasksdone      DoneTask[]
+  savedtaskslist SavedTaskList[]
 }
 
 model Daily {
   id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
   goal      String
   createdAt DateTime @default(now())
-  points    Int      @default(0)
+  points    Int
   checked   Boolean  @default(false)
 
   weeklyProgress Float? @default(0)
@@ -42,21 +44,22 @@ model Daily {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 
-  weekly   Weekly? @relation(fields: [weeklyId], references: [id])
-  weeklyId Int?
+  weekly     Weekly? @relation(fields: [weeklyUuid], references: [uuid])
+  weeklyUuid String?
 
-  monthly   Monthly? @relation(fields: [monthlyId], references: [id])
-  monthlyId Int?
+  monthly     Monthly? @relation(fields: [monthlyUuid], references: [uuid])
+  monthlyUuid String?
 
-  yearly   Yearly? @relation(fields: [yearlyId], references: [id])
-  yearlyId Int?
+  yearly     Yearly? @relation(fields: [yearlyUuid], references: [uuid])
+  yearlyUuid String?
 }
 
 model Weekly {
   id                  Int      @id @default(autoincrement())
+  uuid                String   @unique @default(uuid())
   goal                String
   createdAt           DateTime @default(now())
-  points              Int      @default(0)
+  points              Int
   progress            Float?   @default(0)
   checked             Boolean  @default(false)
   progressBeforeCheck Int? // optional
@@ -66,19 +69,20 @@ model Weekly {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 
-  dailies   Daily[]
-  monthly   Monthly? @relation(fields: [monthlyId], references: [id])
-  monthlyId Int?
+  dailies     Daily[]
+  monthly     Monthly? @relation(fields: [monthlyUuid], references: [uuid])
+  monthlyUuid String?
 
-  yearly   Yearly? @relation(fields: [yearlyId], references: [id])
-  yearlyId Int?
+  yearly     Yearly? @relation(fields: [yearlyUuid], references: [uuid])
+  yearlyUuid String?
 }
 
 model Monthly {
   id                  Int      @id @default(autoincrement())
+  uuid                String   @unique @default(uuid())
   goal                String
   createdAt           DateTime @default(now())
-  points              Int      @default(0)
+  points              Int
   progress            Float?   @default(0)
   checked             Boolean  @default(false)
   progressBeforeCheck Int? // optional
@@ -88,17 +92,18 @@ model Monthly {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 
-  weeklies Weekly[]
-  dailies  Daily[]
-  yearly   Yearly?  @relation(fields: [yearlyId], references: [id])
-  yearlyId Int?
+  weeklies   Weekly[]
+  dailies    Daily[]
+  yearly     Yearly?  @relation(fields: [yearlyUuid], references: [uuid])
+  yearlyUuid String?
 }
 
 model Yearly {
   id                  Int      @id @default(autoincrement())
+  uuid                String   @unique @default(uuid())
   goal                String
   createdAt           DateTime @default(now())
-  points              Int      @default(0)
+  points              Int
   progress            Float?   @default(0)
   checked             Boolean  @default(false)
   progressBeforeCheck Int? // optional
@@ -113,6 +118,7 @@ model Yearly {
 
 model DoneTask {
   id             Int      @id @default(autoincrement())
+  uuid           String   @unique
   user           User     @relation(fields: [userId], references: [id])
   userId         Int
   type           String // daily, weekly, monthly, yearly
@@ -120,6 +126,27 @@ model DoneTask {
   points         Int
   linkedProgress Int?
   completedAt    DateTime @default(now())
+  linkedTo       String? // e.g. linked goal id(s)
+  progress       Float? // final progress before completion
+  timescompleted Int      @default(1)
+}
+
+model SavedTaskList {
+  id         Int          @id @default(autoincrement())
+  name       String       @default("preset")
+  savedtasks SavedTasks[] @relation("ListTasks")
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int
+}
+
+model SavedTasks {
+  id             Int             @id @default(autoincrement())
+  uuid           String          @unique
+  savedtasks     SavedTaskList[] @relation("ListTasks")
+  type           String // daily, weekly, monthly, yearly
+  goal           String
+  points         Int
+  linkedProgress Int?
   linkedTo       String? // e.g. linked goal id(s)
   progress       Float? // final progress before completion
 }

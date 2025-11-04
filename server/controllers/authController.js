@@ -37,6 +37,13 @@ export const registerUser = async (req, res) => {
       const user = await prisma.user.create({
         data: { email, password: hashed, name },
       });
+      await prisma.savedTaskList.createMany({
+        data: [
+          { name: "List 1", userId: user.id },
+          { name: "List 2", userId: user.id },
+          { name: "List 3", userId: user.id },
+        ],
+      });
 
       res.status(201).json({
         message: "User registered successfully.",
