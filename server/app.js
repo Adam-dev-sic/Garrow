@@ -9,55 +9,60 @@ import cors from "cors";
 import initializePassport from "./config/passport.js";
 import taskRoutes from "./routes/tasksRoutes.js";
 
-// Load environment variables
 dotenv.config();
-
 const app = express();
 
-// Middleware
+// Trust proxy (needed on platforms like Render, Vercel, etc)
+app.set("trust proxy", 1);
+
+// Use exact origin from env
+const FRONTEND_URL = process.env.CLIENT_URL || "https://garrow-1.onrender.com";
+
+// CORS - allow only frontend origin and allow credentials
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL, "http://localhost:5173"], // your frontend URL (update when deploying)
-    credentials: true, // allow cookies across domains
+    origin: FRONTEND_URL,
+    credentials: true,
   })
 );
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Express session setup
+const inProd = process.env.NODE_ENV === "production";
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "supersecretkey",
     resave: false,
     saveUninitialized: false,
+    proxy: true, // important when behind proxy
     cookie: {
-      secure: true, // set to true if using https
       httpOnly: true,
-      sameSite: "none",
+      secure: inProd, // true in production (HTTPS), false for local dev
+      sameSite: inProd ? "none" : "lax", // none for cross-site in prod
+      // you can set domain if necessary: domain: ".onrender.com"
     },
   })
 );
 
-// Initialize Passport
+// passport init
 initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
+// routes
 app.use("/api/auth", authRoutes);
 app.use("", taskRoutes);
 
-// Root test route
-app.get("/", (req, res) => {
-  res.send("✅ Server running and ready for authentication!");
-});
+// root
+app.get("/", (req, res) => res.send("Server running"));
 
-// Global error handler (optional but recommended)
+// error handler
 app.use((err, req, res, next) => {
-  console.error("❌ Error:", err);
-  res.status(500).json({ error: "Internal server error" });
+  console.error("Error", err);
+  res.status(500).json({ error: "internal server error" });
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));

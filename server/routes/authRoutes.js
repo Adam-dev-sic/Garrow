@@ -25,15 +25,25 @@ router.post("/today", todayPoints);
  * - On success, passport attaches user to req.user and calls next -> loginUser
  * - On failure, returns 401 with message
  */
-router.post(
-  "/login",
-  // use { session: true } if using sessions; you can also use { session: false } for JWT flows
-  passport.authenticate("local", {
-    failureMessage: true,
-    failWithError: false,
-  }),
-  loginUser
-);
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      return res.status(401).json({ message: info?.message || "Login failed" });
+    }
+
+    // ✅ Explicitly log in the user to create a session
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      res.json({
+        message: "Login successful.",
+        user: { id: user.id, email: user.email, name: user.name },
+      });
+    });
+  })(req, res, next);
+});
 
 /**
  * Logout
