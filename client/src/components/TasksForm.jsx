@@ -118,7 +118,7 @@ function TasksForm({
       setGoal(true);
     } catch (error) {
       console.error("Submission error:", error);
-      alert("An error occurred");
+      alert("Error occured:", error);
     }
   };
 
@@ -139,7 +139,7 @@ function TasksForm({
       setGoal(true);
     } catch (error) {
       console.error("Delete error:", error);
-      alert("An error occurred");
+      alert("Error occured:", error);
     }
   };
 
@@ -239,7 +239,7 @@ function TasksForm({
       fetchUserData();
     } catch (err) {
       console.error("Error re-adding tasks:", err);
-      alert("An error occurred while restoring tasks");
+      alert("Error re-adding tasks:", err);
     }
   };
 

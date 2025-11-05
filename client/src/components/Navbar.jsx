@@ -91,10 +91,11 @@ function Navbar() {
                         headers: { "Content-Type": "application/json" },
                         credentials: "include",
                       });
-
+                      alert("Successfully logged out");
                       fetchUserData();
                     } catch (err) {
                       console.log(err);
+                      alert("Error occured:", err);
                     }
                   }}
                   className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700"

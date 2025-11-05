@@ -21,9 +21,11 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
         body: JSON.stringify(formData),
       });
 
+      alert("Account succesfully created");
       setRegistered(true);
     } catch (err) {
       console.error("Error:", err);
+      alert(err.msg || "Registration failed");
     }
   };
 
@@ -55,7 +57,6 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
           placeholder="Name"
           onChange={(e) => {
             setFormData({ ...formData, name: e.target.value });
-            
           }}
         />
       </div>

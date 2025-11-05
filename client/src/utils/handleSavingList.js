@@ -46,7 +46,9 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
 
       console.log(`✅ Re-added task: ${task.goal}`);
     }
+    alert("List saved");
   } catch (error) {
     console.error("❌ Error in handleSavingList:", error);
+    alert("Error in handleSavingList:", error);
   }
 };

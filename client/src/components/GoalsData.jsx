@@ -65,6 +65,7 @@ function GoalsData({
       triggerRefetch();
     } catch (err) {
       console.error("Error:", err);
+      alert("error occured ", err);
     }
   };
 

@@ -23,9 +23,11 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
 
       alert("Login successful!");
       navigate("/tasks");
+
       // navigate to dashboard, etc.
     } catch (err) {
       console.error("Error:", err);
+      alert(err.message || "Login failed");
     }
   };
 

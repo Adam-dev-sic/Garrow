@@ -31,18 +31,20 @@ function Done({ type }) {
     typeId,
     uuid
   ) => {
-    const response = await apiFetch(`done/${type}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include", // for cookies/session if using passport
+    try {
+      const response = await apiFetch(`done/${type}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
 
-      body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),
-    });
+        body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),
+      });
 
-    triggerRefetch();
-    setTodays(points);
-
-    if (!response) alert("error happened");
+      triggerRefetch();
+      setTodays(points);
+    } catch (error) {
+      alert("Error occured: ", error);
+    }
   };
   const dataType =
     type === "daily"

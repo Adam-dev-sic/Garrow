@@ -60,6 +60,7 @@ export const handleLoadingList = async ({
     }
     await fetchUserData();
   } catch (error) {
-    console.error("❌ Error in handleSavingList:", error);
+    console.error("❌ Error in loading:", error);
+    alert("❌ Error in Loading the list:", error);
   }
 };

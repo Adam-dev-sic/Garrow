@@ -13,6 +13,6 @@ export const handleDeteteListTask = async ({ type, id, fetchUserData }) => {
     fetchUserData();
   } catch (error) {
     console.error("Delete error:", error);
-    alert("An error occurred");
+    alert("An error occurred", error);
   }
 };
