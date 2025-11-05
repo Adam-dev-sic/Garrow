@@ -40,6 +40,7 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
       const response = await apiFetch("/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
         body: JSON.stringify(sendData),
       });
 

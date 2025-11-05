@@ -58,6 +58,8 @@ function GoalsData({
       const response = await apiFetch(`/goals/${type}/check`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", 
+
         body: JSON.stringify({ goalId: goalId, isChecked }),
       });
 

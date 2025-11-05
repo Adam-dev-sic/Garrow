@@ -104,9 +104,11 @@ function TasksForm({
   const handleSubmission = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/add", {
+      const response = await apiFetch(`/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
+
         body: JSON.stringify(taskData),
       });
       const data = await response.json();
@@ -131,6 +133,7 @@ function TasksForm({
       const response = await apiFetch(`/delete/${type}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
         body: JSON.stringify({ editId }),
       });
       const data = await response.json();
@@ -162,6 +165,7 @@ function TasksForm({
       const response = await apiFetch(`/edit/${type}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
         body: JSON.stringify({ ...taskData, editId, formProgress }),
       });
       const data = await response.json();
@@ -235,6 +239,7 @@ function TasksForm({
           const response = await apiFetch(`/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include", // for cookies/session if using passport
             body: JSON.stringify(sendData),
           });
 

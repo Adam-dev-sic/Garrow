@@ -34,6 +34,8 @@ function Done({ type }) {
     const response = await apiFetch(`done/${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include", // for cookies/session if using passport
+
       body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),
     });
     const data = await response.json();

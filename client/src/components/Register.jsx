@@ -9,7 +9,6 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
     email: "",
     password: "",
   });
-  
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -17,6 +16,8 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
       const response = await apiFetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
+
         body: JSON.stringify(formData),
       });
       const data = await response.json();

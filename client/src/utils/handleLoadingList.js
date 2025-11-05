@@ -52,6 +52,7 @@ export const handleLoadingList = async ({
       const response = await apiFetch("/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // for cookies/session if using passport
         body: JSON.stringify(sendData),
       });
 
