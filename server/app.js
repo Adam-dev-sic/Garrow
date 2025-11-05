@@ -1,76 +1,81 @@
-// src/app.js
 import express from "express";
 import session from "express-session";
 import passport from "passport";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import authRoutes from "./routes/authRoutes.js";
+import path from "path";
 import cors from "cors";
 import initializePassport from "./config/passport.js";
+import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/tasksRoutes.js";
 
 dotenv.config();
 const app = express();
 
-// Trust proxy (needed on platforms like Render, Vercel, etc)
+// Trust proxy (important for Render/HTTPS)
 app.set("trust proxy", 1);
-
-// Use exact origin from env
-const FRONTEND_URL = process.env.CLIENT_URL || "https://garrow-1.onrender.com";
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://garrow-1.onrender.com",
-];
-// CORS - allow only frontend origin and allow credentials
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 const inProd = process.env.NODE_ENV === "production";
 
+// --- Middlewares ---
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// CORS (only needed for local dev)
+if (!inProd) {
+  app.use(
+    cors({
+      origin: ["http://localhost:5173"],
+      credentials: true,
+    })
+  );
+}
+
+// --- Sessions ---
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "supersecretkey",
     resave: false,
     saveUninitialized: false,
-    proxy: inProd, // important when behind proxy
+    proxy: inProd,
     cookie: {
       httpOnly: true,
-      secure: inProd, // true in production (HTTPS), false for local dev
-      sameSite: inProd ? "none" : "lax", // none for cross-site in prod
-      // you can set domain if necessary: domain: ".onrender.com"
+      secure: inProd,
+      sameSite: inProd ? "lax" : "lax", // now same-site since same domain
     },
   })
 );
 
-// passport init
+// --- Passport setup ---
 initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// routes
+// --- API routes ---
 app.use("/api/auth", authRoutes);
-app.use("", taskRoutes);
+app.use("/api/tasks", taskRoutes);
 
-// root
-app.get("/", (req, res) => res.send("Server running"));
+// --- Serve React frontend ---
+if (inProd) {
+  const __dirname = path.resolve();
+  const frontendPath = path.join(__dirname, "client", "dist"); // adjust if needed
+  app.use(express.static(frontendPath));
 
-// error handler
+  // All non-API routes -> React app
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Server running (development mode)");
+  });
+}
+
+// --- Error handler ---
 app.use((err, req, res, next) => {
-  console.error("Error", err);
-  res.status(500).json({ error: "internal server error" });
+  console.error("Error:", err);
+  res.status(500).json({ error: "Internal server error" });
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
