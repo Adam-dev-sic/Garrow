@@ -9,7 +9,6 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
     password: "",
   });
 
-  
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -21,14 +20,10 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
         credentials: "include", // for cookies/session if using passport
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Login successful!");
-        navigate("/tasks");
-        // navigate to dashboard, etc.
-      } else {
-        alert(data.message || "Login failed");
-      }
+
+      alert("Login successful!");
+      navigate("/tasks");
+      // navigate to dashboard, etc.
     } catch (err) {
       console.error("Error:", err);
     }

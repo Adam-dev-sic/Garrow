@@ -20,14 +20,8 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
 
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        alert("Registered successfully!");
-        setRegistered(true); // switch to login
-      } else {
-        alert(data.message || "Registration failed");
-      }
+
+      setRegistered(true);
     } catch (err) {
       console.error("Error:", err);
     }
@@ -61,7 +55,7 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
           placeholder="Name"
           onChange={(e) => {
             setFormData({ ...formData, name: e.target.value });
-            console.log(formData);
+            
           }}
         />
       </div>

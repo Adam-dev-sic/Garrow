@@ -38,13 +38,9 @@ function Done({ type }) {
 
       body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),
     });
-    const data = await response.json();
-    if (response.ok) {
-      triggerRefetch();
-      setTodays(points);
-    } else {
-      alert(data.message || "Operation failed");
-    }
+
+    triggerRefetch();
+    setTodays(points);
 
     if (!response) alert("error happened");
   };

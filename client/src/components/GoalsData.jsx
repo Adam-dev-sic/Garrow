@@ -58,17 +58,11 @@ function GoalsData({
       const response = await apiFetch(`/goals/${type}/check`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", 
-
+        credentials: "include",
         body: JSON.stringify({ goalId: goalId, isChecked }),
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        triggerRefetch();
-      } else {
-        console.error("Failed to update goal status:", data.message);
-      }
+      triggerRefetch();
     } catch (err) {
       console.error("Error:", err);
     }

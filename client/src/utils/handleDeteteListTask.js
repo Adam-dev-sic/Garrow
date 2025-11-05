@@ -9,14 +9,8 @@ export const handleDeteteListTask = async ({ type, id, fetchUserData }) => {
       credentials: "include", // for cookies/session if using passport
       body: JSON.stringify({ id }),
     });
-    const data = await response.json();
-    if (response.ok) {
-      alert("Task Deleted");
 
-      fetchUserData();
-    } else {
-      alert(data.message || "Delete failed");
-    }
+    fetchUserData();
   } catch (error) {
     console.error("Delete error:", error);
     alert("An error occurred");

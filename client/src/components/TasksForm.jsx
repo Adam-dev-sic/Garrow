@@ -111,16 +111,11 @@ function TasksForm({
 
         body: JSON.stringify(taskData),
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Task Added");
-        setFormIsOpen(false);
-        fetchUserData();
-        setLinked(false);
-        setGoal(true);
-      } else {
-        alert(data.message || "Registration failed");
-      }
+
+      setFormIsOpen(false);
+      fetchUserData();
+      setLinked(false);
+      setGoal(true);
     } catch (error) {
       console.error("Submission error:", error);
       alert("An error occurred");
@@ -136,16 +131,12 @@ function TasksForm({
         credentials: "include", // for cookies/session if using passport
         body: JSON.stringify({ editId }),
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Task Deleted");
-        setFormIsOpen(false);
-        fetchUserData();
-        setLinked(false);
-        setGoal(true);
-      } else {
-        alert(data.message || "Delete failed");
-      }
+
+      alert("Task Deleted");
+      setFormIsOpen(false);
+      fetchUserData();
+      setLinked(false);
+      setGoal(true);
     } catch (error) {
       console.error("Delete error:", error);
       alert("An error occurred");
@@ -168,16 +159,12 @@ function TasksForm({
         credentials: "include", // for cookies/session if using passport
         body: JSON.stringify({ ...taskData, editId, formProgress }),
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Task Edited");
-        setFormIsOpen(false);
-        fetchUserData();
-        setLinked(false);
-        setGoal(true);
-      } else {
-        alert(data.message || "Edit failed");
-      }
+
+      alert("Task Edited");
+      setFormIsOpen(false);
+      fetchUserData();
+      setLinked(false);
+      setGoal(true);
     } catch (error) {
       console.error("Edit error:", error);
       alert("An error occurred");
@@ -243,14 +230,7 @@ function TasksForm({
             body: JSON.stringify(sendData),
           });
 
-          const data = await response.json();
-          if (response.ok) {
-            console.log(`✅ Re-added task: ${task.goal}`);
-            setFormIsOpen(false);
-          } else {
-            console.warn(`❌ Failed to re-add ${task.goal}:`, data.error);
-            alert(data.message);
-          }
+          setFormIsOpen(false);
         } else {
           console.log("No match for:", task.goal);
         }

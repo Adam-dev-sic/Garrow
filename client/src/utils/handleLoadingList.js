@@ -56,13 +56,7 @@ export const handleLoadingList = async ({
         body: JSON.stringify(sendData),
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        console.log(`✅ Re-added task: ${task.goal}`);
-      } else {
-        console.warn(`❌ Failed to re-add ${task.goal}:`, data.error);
-        alert(data.message);
-      }
+      console.log(`✅ Re-added task: ${task.goal}`);
     }
     await fetchUserData();
   } catch (error) {
