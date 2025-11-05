@@ -12,7 +12,7 @@ function Auth() {
   const navigate = useNavigate();
 
   return (
-    <div className="@container animate-fade-in relative overflow-hidden bg-[url('/images/wallpaperflare.com_wallpaper(5).jpg')]  bg-cover bg-no-repeat bg-center h-screen flex items-center justify-center space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
+    <div className="@container animate-fade-in relative overflow-hidden bg-[url('/images/spiderman.jpg')]  bg-cover bg-no-repeat bg-center h-screen flex items-center justify-center space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
       {userData && userData.email ? (
         <div className="text-white">
           <h1>You are already logged in {userData.name}</h1>

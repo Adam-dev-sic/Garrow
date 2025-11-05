@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { Link } from "react-router-dom";
 import { useTodaysPoints } from "../store/useTodaysPoints";
+import { apiFetch } from "../utils/api";
 
 function GoalsData({
   isLoading,
@@ -164,7 +165,7 @@ function GoalsData({
                 className="group relative flex rounded-lg flex-shrink-0 has-[input:checked]:border-0 has-[input:checked]:shadow-[0_0_9px_4px_rgba(255,255,255,0.8)]  p-5 bg-[#181818] items-start border-b-2 overflow-x-auto overflow-y-visible font-bold h-30 space-x-10 w-full border-b-white"
               >
                 <img
-                  src="/images/edit(1).png"
+                  src="/images/edit.png"
                   className="w-7 h-7 absolute left-2 top-0 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                   alt="edit"
                   onClick={() => {

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Home() {
   return (
     <>
-      <div className="@container animate-fade-in bg-[url('/images/wallpaperflare.com_wallpaper(7).jpg')] relative overflow-hidden bg-cover bg-no-repeat bg-center space-y-10 h-screen flex text-white flex-col items-center justify-center  max-md:bg-cover obect-fit ">
+      <div className="@container animate-fade-in bg-[url('/images/berserk.jpg')] relative overflow-hidden bg-cover bg-no-repeat bg-center space-y-10 h-screen flex text-white flex-col items-center justify-center  max-md:bg-cover obect-fit ">
         <h1 className="berserk-h1 text-4xl text-center  font-black">
           Take actions and your goals are yours
         </h1>

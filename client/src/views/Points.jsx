@@ -28,7 +28,7 @@ function Points() {
   // }, []);
 
   return (
-    <div className="@container animate-fade-in bg-[url('/images/wallpaperflare.com_wallpaper(11).jpg')] overflow-hidden overflow-x-hidden bg-cover bg-no-repeat bg-center h-screen items-center justify-center flex flex-col space-y-10 ">
+    <div className="@container animate-fade-in bg-[url('/images/wallpaperflare.com_wallpaper11.jpg')] overflow-hidden overflow-x-hidden bg-cover bg-no-repeat bg-center h-screen items-center justify-center flex flex-col space-y-10 ">
       <button className="absolute bottom-0 task-button h-15 !w-50">
         {" "}
         <h1>Achivements.</h1> <p className="text-black/40">(coming soon)</p>
