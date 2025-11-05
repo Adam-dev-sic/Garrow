@@ -25,7 +25,7 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
       setRegistered(true);
     } catch (err) {
       console.error("Error:", err);
-      alert(err.error || "Registration failed");
+      alert(err.message || "Registration failed");
     }
   };
 
