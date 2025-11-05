@@ -8,12 +8,11 @@ export const useUserStore = create((set, get) => ({
 
   fetchUserData: async () => {
     try {
-      const res = await apiFetch("/api/auth/me", {
+      const data = await apiFetch("/api/auth/me", {
         credentials: "include",
       });
 
       if (!res.ok) throw new Error("Failed to fetch user");
-      const data = await res.json();
       const sortedUser = {
         ...data.user,
         dailies: [...(data.user.dailies || [])].sort(
