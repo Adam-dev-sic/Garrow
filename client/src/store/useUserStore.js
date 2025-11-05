@@ -12,7 +12,6 @@ export const useUserStore = create((set, get) => ({
         credentials: "include",
       });
 
-      if (!res.ok) throw new Error("Failed to fetch user");
       const sortedUser = {
         ...data.user,
         dailies: [...(data.user.dailies || [])].sort(
