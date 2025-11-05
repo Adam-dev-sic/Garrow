@@ -58,11 +58,11 @@ app.use("/api/tasks", taskRoutes);
 // --- Serve React frontend ---
 if (inProd) {
   const __dirname = path.resolve();
-  const frontendPath = path.join(__dirname, "client", "dist"); // adjust if needed
+  const frontendPath = path.join(__dirname, "../client", "dist"); // adjust if needed
   app.use(express.static(frontendPath));
 
   // All non-API routes -> React app
-  app.get("*", (req, res) => {
+  app.get(/.*/, (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 } else {
