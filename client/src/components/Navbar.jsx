@@ -102,7 +102,7 @@ function Navbar() {
                 >
                   Logout
                 </button>
-                {userData.name === "lilyvrxa" && <button>For lily ❤️ </button>}
+                {/* {userData.name === "lilyvrxa" && <button>For lily ❤️ </button>} */}
               </div>
             </>
           ) : (
