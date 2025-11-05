@@ -5,6 +5,7 @@ import Tasks from "./views/Tasks";
 import Points from "./views/Points";
 import Auth from "./views/Auth";
 import App from "./App";
+import Mylove from "./views/Mylove";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
       { path: "tasks", element: <Tasks /> },
       { path: "points", element: <Points /> },
       { path: "/auth", element: <Auth /> },
+      { path: "lily", element: <Mylove /> },
     ],
   },
 ]);

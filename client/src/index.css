@@ -1,6 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Parisienne&display=swap");
+
 @import "tailwindcss";
 @plugin "@midudev/tailwind-animations";
-
 .task-button {
   @apply px-6 py-3 w-40 rounded-lg text-black font-semibold bg-gradient-to-r from-[#6e6f6f] via-white to-[#282727] shadow-lg hover:from-black hover:cursor-pointer hover:via-white hover:to-black transition-all duration-300 xl:w-60;
 }
@@ -93,6 +95,10 @@
 
 .btn-glow::before {
   content: "";
+  top: -100px;
+  left: 92px;
+  animation: animateHeart 2s steps(1) infinite;
+
   position: absolute;
   inset: 0;
   padding: 2px; /* border thickness */
@@ -136,3 +142,155 @@
 body{
   background-color: black;
 } */
+.lilypage {
+  position: relative;
+  height: 430px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  -webkit-box-reflect: below 1px
+    linear-gradient(
+      transparent,
+      transparent,
+      transparent,
+      transparent,
+      transparent,
+      #0005
+    );
+}
+
+.heart {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  /* filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6))
+    drop-shadow(0 0 60px rgba(255, 0, 0, 0.4))
+    drop-shadow(0 0 100px rgba(255, 0, 0, 0.2)); */
+}
+.heart::before {
+  content: "";
+  top: -80px;
+  left: 20px;
+  position: absolute;
+  width: 200px;
+  height: 300px;
+  background: #85001f;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+  rotate: 315deg;
+  z-index: 1000;
+  animation: animateHeart 2s steps(1) infinite;
+}
+.heart::after {
+  content: "";
+  top: -80px;
+  left: 92px;
+  position: absolute;
+  width: 200px;
+  height: 300px;
+  background: #85001f;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+  rotate: 45deg;
+  z-index: 1000;
+  animation: animateHeart 2s steps(1) infinite;
+}
+
+@keyframes animateHeart {
+  0%,
+  70%,
+  100% {
+    filter: none;
+  }
+  71% {
+    filter: drop-shadow(0 0 30px #f00) drop-shadow(0 0 10px #f00);
+    background: rgb(255, 24, 24);
+  }
+}
+.drop {
+  position: absolute;
+  top: 40px;
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(5px 5px 10px #000) drop-shadow(0px 0px 10px #f00);
+  transform-origin: bottom;
+  animation: animate 4s linear forwards;
+}
+
+.drop::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 30px;
+  background: #f00;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transform-origin: bottom;
+  rotate: -45deg;
+  z-index: 10000;
+}
+
+.drop::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  width: 30px;
+  height: 20px;
+  background: #f00;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  transform-origin: bottom;
+  rotate: 315deg;
+  z-index: 10000;
+}
+@keyframes animate {
+  0% {
+    top: 40px;
+    opacity: 1;
+    scale: 1;
+  }
+  70% {
+    top: 400px;
+    opacity: 1;
+  }
+  80% {
+    top: 400px;
+  }
+  100% {
+    top: 400px;
+    opacity: 0;
+    scale: 0;
+  }
+}
+@keyframes softGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+      0 0 20px rgba(255, 150, 150, 0.6), 0 0 40px rgba(255, 100, 100, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1),
+      0 0 30px rgba(255, 120, 120, 0.8), 0 0 60px rgba(255, 0, 0, 0.7);
+  }
+}
+
+.animate-softGlow {
+  animation: softGlow 3s ease-in-out infinite;
+}
+
+@keyframes romanticGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 8px rgba(255, 182, 193, 0.8),
+      0 0 16px rgba(255, 105, 180, 0.6), 0 0 24px rgba(255, 20, 147, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 12px rgba(255, 192, 203, 1),
+      0 0 24px rgba(255, 105, 180, 0.8), 0 0 40px rgba(255, 20, 147, 0.6);
+  }
+}
+
+.animate-romanticGlow {
+  animation: romanticGlow 3s ease-in-out infinite;
+}

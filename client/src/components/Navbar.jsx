@@ -61,9 +61,9 @@ function Navbar() {
 
               {/* Dropdown menu */}
               <div
-                className={`absolute right-0 mt-2 w-40 bg-[#181818] border border-gray-600 rounded-xl shadow-lg overflow-hidden transition-all duration-300 ${
+                className={`absolute right-0 mt-2 w-40 bg-[#181818] border border-gray-600 rounded-xl shadow-lg overflow-hidden transition-all  duration-300 ${
                   menuOpen
-                    ? "opacity-100 translate-y-0 visible"
+                    ? "opacity-100 translate-y-0 visible "
                     : "opacity-0 -translate-y-2 invisible"
                 }`}
               >
@@ -81,6 +81,13 @@ function Navbar() {
                     onClick={() => setMenuOpen(false)}
                   >
                     Points
+                  </Link>
+                )}
+                {userData.name === "lilyvrxa" && (
+                  <Link to={"/lily"} onClick={() => setMenuOpen(false)}>
+                    <button className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">
+                      For Lily ❤️{" "}
+                    </button>
                   </Link>
                 )}
                 <button
@@ -102,7 +109,6 @@ function Navbar() {
                 >
                   Logout
                 </button>
-                {/* {userData.name === "lilyvrxa" && <button>For lily ❤️ </button>} */}
               </div>
             </>
           ) : (

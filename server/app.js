@@ -17,15 +17,23 @@ app.set("trust proxy", 1);
 
 // Use exact origin from env
 const FRONTEND_URL = process.env.CLIENT_URL || "https://garrow-1.onrender.com";
-
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://garrow-1.onrender.com",
+];
 // CORS - allow only frontend origin and allow credentials
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -36,7 +44,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "supersecretkey",
     resave: false,
     saveUninitialized: false,
-    proxy: true, // important when behind proxy
+    proxy: inProd, // important when behind proxy
     cookie: {
       httpOnly: true,
       secure: inProd, // true in production (HTTPS), false for local dev
