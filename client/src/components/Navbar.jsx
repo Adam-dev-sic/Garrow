@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
 import { useMediaQuery } from "react-responsive";
+import { apiFetch } from "../utils/api";
 
 function Navbar() {
   const { userData, fetchUserData } = useUserStore();
@@ -85,19 +86,13 @@ function Navbar() {
                 <button
                   onClick={async () => {
                     try {
-                      const response = await fetch(
-                        "http://localhost:5000/api/auth/logout",
-                        {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          credentials: "include",
-                        }
-                      );
-                      const data = response.json;
-                      if (data) {
-                        alert("logged out succesfully");
-                        fetchUserData()
-                      } else console.log("failed");
+                      const response = await apiFetch("/api/auth/logout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                      });
+
+                      fetchUserData();
                     } catch (err) {
                       console.log(err);
                     }
