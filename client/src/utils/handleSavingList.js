@@ -28,9 +28,9 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
         uuid: task.uuid,
         list: listId,
         linked: {
-          weekly: (task.linkedTo && JSON.parse(task.linkedTo).weekly) || "",
-          monthly: (task.linkedTo && JSON.parse(task.linkedTo).monthly) || "",
-          yearly: (task.linkedTo && JSON.parse(task.linkedTo).yearly) || "",
+          weekly: task.weeklyUuid || "",
+          monthly: task.monthlyUuid || "",
+          yearly: task.yearlyUuid || "",
         },
         linkedProgress: task.linkedProgress || 0,
         points: task.points || 0,
