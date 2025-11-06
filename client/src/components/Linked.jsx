@@ -72,7 +72,7 @@ function Linked({
             >
               <h1>Progress (%)</h1>
               <input
-                value={formLinkedPoints} // controlled input
+                value={formLinkedPoints ? formLinkedPoints : 14.29} // controlled input
                 onChange={(e) => setFormLinkedPoints(e.target.value)}
                 type="text"
                 className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
@@ -132,7 +132,7 @@ function Linked({
               <h1>Progress (%)</h1>
               <input
                 type="text"
-                value={formLinkedPoints} // controlled input
+                value={formLinkedPoints ? formLinkedPoints : 25} // controlled input
                 onChange={(e) => setFormLinkedPoints(e.target.value)}
                 className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
                 font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2 
@@ -185,10 +185,10 @@ function Linked({
                 yearlyProgress ? "!flex" : "!hidden"
               }`}
             >
-              <h1>Progress</h1>
+              <h1>Progress (%)</h1>
               <input
                 type="text"
-                value={formLinkedPoints} // controlled input
+                value={formLinkedPoints ? formLinkedPoints : 8.33333333} // controlled input
                 onChange={(e) => setFormLinkedPoints(e.target.value)}
                 className={` bg-gradient-to-r from-[#dcdcdc] via-[#f5f5f5] to-[#a0a0a0] w-30 text-black
                      font-semibold h-12 text-lg text-center rounded-full p-3 z-50 focus:bg-[#251f19] lg:w-1/2 

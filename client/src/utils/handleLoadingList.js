@@ -7,14 +7,14 @@ export const handleLoadingList = async ({
   listId,
   fetchUserData,
 }) => {
-  //   const iterationKey =
-  //     type === "daily"
-  //       ? "dailies"
-  //       : type === "weekly"
-  //       ? "weeklies"
-  //       : type === "monthly"
-  //       ? "monthlies"
-  //       : "yearlies";
+  const iterationKey =
+    type === "daily"
+      ? "dailies"
+      : type === "weekly"
+      ? "weeklies"
+      : type === "monthly"
+      ? "monthlies"
+      : "yearlies";
   //   const { fetchUserData } = useUserStore();
   if (listId === "") {
     alert("Select a list first");
@@ -28,12 +28,13 @@ export const handleLoadingList = async ({
     console.log("✅ userData:", userData);
 
     if (iterationValue.savedtasks.length === 0) {
-      alert("You have no completed tasks to load");
+      alert("You have no new tasks to load");
       return;
     }
 
     for (const task of iterationValue.savedtasks) {
       if (type != task.type) continue;
+      if (userData[iterationKey].some((e) => e.uuid === task.uuid)) continue;
 
       const sendData = {
         id: userData.id,
@@ -60,7 +61,7 @@ export const handleLoadingList = async ({
     }
     await fetchUserData();
   } catch (error) {
-    console.error("❌ Error in loading:", error);
-    alert("❌ Error in Loading the list:", error);
+    console.error("❌ Error in loading:", error.message);
+    alert("❌ Error in Loading the list:", error.message);
   }
 };
