@@ -49,7 +49,7 @@ export const handleLoadingList = async ({
         type: task.type,
       };
 
-      const response = await apiFetch("/add", {
+      const response = await apiFetch("/api/tasks/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport

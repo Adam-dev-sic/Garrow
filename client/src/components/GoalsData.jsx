@@ -55,7 +55,7 @@ function GoalsData({
     console.log(isChecked, goalId);
 
     try {
-      const response = await apiFetch(`/goals/${type}/check`, {
+      const response = await apiFetch(`/api/tasks/goals/${type}/check`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

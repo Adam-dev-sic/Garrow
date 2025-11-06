@@ -3,7 +3,7 @@ import { apiFetch } from "./api";
 export const handleDeteteListTask = async ({ type, id, fetchUserData }) => {
   try {
     console.log(id, type);
-    const response = await apiFetch(`/delete/${type}`, {
+    const response = await apiFetch(`/api/tasks/delete/${type}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       credentials: "include", // for cookies/session if using passport

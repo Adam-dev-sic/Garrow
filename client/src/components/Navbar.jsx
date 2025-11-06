@@ -93,7 +93,7 @@ function Navbar() {
                 <button
                   onClick={async () => {
                     try {
-                      const response = await apiFetch("/api/auth/logout", {
+                      const response = await apiFetch("/api/tasks/api/auth/logout", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         credentials: "include",

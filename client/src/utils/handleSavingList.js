@@ -37,7 +37,7 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
         type: task.type || type,
       };
 
-      const response = await apiFetch("/save", {
+      const response = await apiFetch("/api/tasks/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport

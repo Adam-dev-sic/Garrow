@@ -104,7 +104,7 @@ function TasksForm({
   const handleSubmission = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiFetch(`/add`, {
+      const response = await apiFetch(`/api/tasks/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport
@@ -125,7 +125,7 @@ function TasksForm({
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiFetch(`/delete/${type}`, {
+      const response = await apiFetch(`/api/tasks/delete/${type}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport
@@ -153,7 +153,7 @@ function TasksForm({
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiFetch(`/edit/${type}`, {
+      const response = await apiFetch(`/api/tasks/edit/${type}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport
@@ -223,7 +223,7 @@ function TasksForm({
             type: task.type || type,
           };
 
-          const response = await apiFetch(`/add`, {
+          const response = await apiFetch(`/api/tasks/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include", // for cookies/session if using passport

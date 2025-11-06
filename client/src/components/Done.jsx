@@ -32,7 +32,7 @@ function Done({ type }) {
     uuid
   ) => {
     try {
-      const response = await apiFetch(`done/${type}`, {
+      const response = await apiFetch(`/api/tasks/done/${type}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // for cookies/session if using passport
