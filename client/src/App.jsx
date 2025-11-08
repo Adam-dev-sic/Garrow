@@ -8,11 +8,23 @@ import Tasks from "./views/Tasks";
 import Points from "./views/Points";
 import { Outlet } from "react-router-dom";
 import UserWatcher from "./views/UserWatcher";
-
+import { ToastContainer, toast } from "react-toastify";
 function App() {
   return (
     <>
-   <UserWatcher/>
+      <ToastContainer
+      // position="top-right"
+      // autoClose={3000}
+      // hideProgressBar={false}
+      // newestOnTop={false}
+      // closeOnClick={false}
+      // rtl={false}
+      // pauseOnFocusLoss
+      // draggable
+      // pauseOnHover
+      // theme="dark"
+      />
+      <UserWatcher />
       <Navbar />
       <main>
         <Outlet />

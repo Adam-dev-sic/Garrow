@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
 import { apiFetch } from "../utils/api";
+import { toast } from "react-toastify";
 function Login({ hovered, setHovered, setRegistered, setActive, active }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -20,9 +21,17 @@ function Login({ hovered, setHovered, setRegistered, setActive, active }) {
         credentials: "include", // for cookies/session if using passport
         body: JSON.stringify(formData),
       });
-
-      alert("Login successful!");
-      navigate("/tasks");
+      toast.success(" Logged in Successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      navigate("/goals");
 
       // navigate to dashboard, etc.
     } catch (err) {

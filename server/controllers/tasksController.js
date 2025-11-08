@@ -19,7 +19,7 @@ export const addTask = async (req, res) => {
     if (numericPoints < 0) {
       return res.status(400).json({ message: "Points cannot be negative" });
     }
-      const model = prisma[type];
+    const model = prisma[type];
     if (!model) return res.status(400).json({ message: "Invalid model type." });
 
     const data = {
@@ -218,11 +218,15 @@ export const removeDoneTasks = async (req, res) => {
         },
       });
     }
+    const thisUser = await prisma.user.findFirst({
+      where: { id: userId },
+    });
 
     await prisma.user.update({
       where: { id: userId }, // ✅
       data: {
         totalpoints: { increment: Number(points) || 0 },
+        reqAchivPoints: { increment: Number(points / 1.2) },
       },
     });
 

@@ -31,6 +31,13 @@ export const registerUser = async (req, res) => {
       const existing = await prisma.user.findUnique({ where: { email } });
       if (existing)
         return res.status(400).json({ message: "Email already registered." });
+      const strongPassword = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      if (!strongPassword.test(password)) {
+        return res.status(400).json({
+          message:
+            "Password must be at least 8 characters long and include uppercase, lowercase.",
+        });
+      }
 
       // Hash and save
       const hashed = await hashPassword(password);
@@ -43,6 +50,15 @@ export const registerUser = async (req, res) => {
           { name: "List 2", userId: user.id },
           { name: "List 3", userId: user.id },
         ],
+      });
+      await prisma.achievements.create({
+        data: {
+          title: "Getting Started",
+          description:
+            "Welcome, Getting started is always the first step Champion! Work hard grind points and get more Achievements!",
+          difficulty: "champion",
+          userId: user.id,
+        },
       });
 
       res.status(201).json({

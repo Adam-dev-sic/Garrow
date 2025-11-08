@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useTodaysPoints } from "../store/useTodaysPoints";
 import { apiFetch } from "../utils/api";
+import { toast } from "react-toastify";
 
 function Done({ type }) {
   const { userData, triggerRefetch } = useUserStore();
@@ -40,6 +41,16 @@ function Done({ type }) {
         body: JSON.stringify({ userId, id, points, progress, typeId, uuid }),
       });
 
+      toast.success("Tasks Completed!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       triggerRefetch();
       setTodays(points);
     } catch (error) {

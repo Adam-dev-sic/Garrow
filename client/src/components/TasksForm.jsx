@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Linked from "./Linked";
 import { useUserStore } from "../store/useUserStore";
 import { apiFetch } from "../utils/api";
+import { toast } from "react-toastify";
 
 function TasksForm({
   goal,
@@ -112,6 +113,16 @@ function TasksForm({
         body: JSON.stringify(taskData),
       });
 
+      toast.success("Task Added", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setFormIsOpen(false);
       fetchUserData();
       setLinked(false);
@@ -132,7 +143,16 @@ function TasksForm({
         body: JSON.stringify({ editId }),
       });
 
-      alert("Task Deleted");
+      toast.info("Task Deleted!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setFormIsOpen(false);
       fetchUserData();
       setLinked(false);
@@ -160,7 +180,16 @@ function TasksForm({
         body: JSON.stringify({ ...taskData, editId, formProgress }),
       });
 
-      alert("Task Edited");
+      toast.success("Task Edited", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setFormIsOpen(false);
       fetchUserData();
       setLinked(false);
@@ -235,6 +264,16 @@ function TasksForm({
           console.log("No match for:", task.goal);
         }
       }
+      toast.success("List Saved ✅", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
 
       fetchUserData();
     } catch (err) {

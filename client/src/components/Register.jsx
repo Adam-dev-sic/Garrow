@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../utils/api";
+import { toast } from "react-toastify";
 
 function Register({ hovered, setHovered, setRegistered, setActive, active }) {
   const [formData, setFormData] = useState({
@@ -9,9 +10,16 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
     email: "",
     password: "",
   });
+  const strongPassword = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!strongPassword.test(formData.password)) {
+      return alert(
+        "Password must contain uppercase, lowercase, and be at least 8 characters long."
+      );
+    }
+
     try {
       const response = await apiFetch("/api/auth/register", {
         method: "POST",
@@ -20,8 +28,16 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
 
         body: JSON.stringify(formData),
       });
-
-      alert("Account succesfully created");
+      toast.success("Registered Successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setRegistered(true);
     } catch (err) {
       console.error("Error:", err);
@@ -29,6 +45,11 @@ function Register({ hovered, setHovered, setRegistered, setActive, active }) {
     }
   };
 
+  // toast.promise(handleRegister, {
+  //   pending: "Validating your infos",
+  //   success: "Registered Successfully",
+  //   error: "Error please try again",
+  // });
   return (
     <form
       className="mt-30 text-white animate-fade-in-down flex flex-col space-y-7 border-4 border-[#343536] bg-[#181818] w-80 h-150 rounded-2xl  items-center justify-center lg:w-100"

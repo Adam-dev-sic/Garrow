@@ -17,10 +17,10 @@ function Auth() {
         <div className="text-white">
           <h1>You are already logged in {userData.name}</h1>
           <button
-            onClick={() => navigate("/tasks")}
+            onClick={() => navigate("/goals")}
             className="bg-[#343536] w-full h-10 rounded-lg z-10 hover:bg-[#493f33] mt-3"
           >
-            Go to Tasks
+            Check your goals!
           </button>
         </div>
       ) : registered ? (

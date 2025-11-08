@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { apiFetch } from "./api";
 
 export const handleSavingList = async ({ e, userData, type, listId }) => {
@@ -46,9 +47,28 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
 
       console.log(`✅ Re-added task: ${task.goal}`);
     }
-    alert("List saved");
+    toast.success("List Saved ", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   } catch (error) {
     console.error("❌ Error in handleSavingList:", error);
-    alert("Error in handleSavingList:", error);
+    toast.error(`Error happend", ${error}`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   }
 };

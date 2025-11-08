@@ -8,6 +8,7 @@ import cors from "cors";
 import initializePassport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/tasksRoutes.js";
+import achievementRoutes from "./routes/achievementsRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -54,6 +55,7 @@ app.use(passport.session());
 // --- API routes ---
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/achievements", achievementRoutes);
 
 // --- Serve React frontend ---
 if (inProd) {

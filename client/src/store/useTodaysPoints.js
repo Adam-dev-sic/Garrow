@@ -10,12 +10,8 @@ export const useTodaysPoints = create((set, get) => ({
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ points }),
-        
       });
-      const data = await response.json();
-      if (!response.ok) {
-        alert(data.message || "Failed to update today's points");
-      }
+      // const data = await response.json();
     } catch (err) {
       console.error("Error:", err);
     }

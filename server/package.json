@@ -8,7 +8,8 @@
     "start": "node app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "build": "echo \"no build step\""
+    "build": "echo \"no build step\"",
+    "backfill:achievements": "node scripts/backfillGettingStarted.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "kickbox": "^2.0.4",
+    "openai": "^6.8.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "react-responsive": "^10.0.1"

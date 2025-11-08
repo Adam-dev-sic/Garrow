@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Done from "./Done";
 import { handleLoadingList } from "../utils/handleLoadingList";
 import { handleSavingList } from "../utils/handleSavingList";
+import { handleDeteteListTask } from "../utils/handleDeteteListTask";
 
 export default function Daily({ dailyOpen, setDailyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -70,6 +71,7 @@ export default function Daily({ dailyOpen, setDailyOpen }) {
       ) {
         setListButtons(false);
       }
+      
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);

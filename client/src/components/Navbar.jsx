@@ -25,9 +25,9 @@ function Navbar() {
     <nav className="flex items-center justify-center bg-black w-full fixed z-50 h-25 px-8 py-8">
       {/* Center section */}
       <div className="flex items-center space-x-16">
-        <Link to={"tasks"}>
+        <Link to={"goals"}>
           <button className="cursor-pointer text-white hover:border-b border-white">
-            Tasks
+            Goals
           </button>
         </Link>
 

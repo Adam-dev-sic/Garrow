@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { useUserStore } from "../store/useUserStore";
 import { apiFetch } from "./api";
 
@@ -59,9 +60,29 @@ export const handleLoadingList = async ({
 
       console.log(`✅ Re-added task: ${task.goal}`);
     }
+    toast.success("List Loaded", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     await fetchUserData();
   } catch (error) {
     console.error("❌ Error in loading:", error.message);
-    alert("❌ Error in Loading the list:", error.message);
+    toast.error(`Error happend", ${error}`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   }
 };

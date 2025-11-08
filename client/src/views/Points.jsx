@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import Circle from "../components/Circle";
 import { useTodaysPoints } from "../store/useTodaysPoints";
+import { apiFetch } from "../utils/api";
+import Achievements from "../components/Achievements";
 
 function Points() {
   const { userData, fetchUserData } = useUserStore();
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  const [achievementLayout, setAchievementLayout] = useState(false);
+
   const [totalPoints, setTotalPoints] = useState(0);
   const { setTodays, resetTodaysPoints } = useTodaysPoints();
+  const [achivementTrigger, setAchivementTrigger] = useState(5000);
   // console.log(todaysPoints);
   useEffect(() => {
     if (userData?.dailies?.length) {
@@ -22,14 +24,48 @@ function Points() {
       setTotalPoints(0);
     }
   }, [userData]);
-  // useEffect(() => {
-  //   resetTodaysPoints();
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    const checkAchievements = async () => {
+      if (!userData || !userData.id) return;
+      let hasRan = false;
+      if (!hasRan) {
+        const id = await userData.id;
+        if (userData?.totalpoints >= userData?.reqAchivPoints) {
+          try {
+            const response = await apiFetch("/api/achievements/add", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ id }), // send as an object!
+            });
+
+            if (response.ok) {
+              console.log("🎉 Achievement generation triggered!");
+            } else {
+              console.error(
+                "❌ Failed to generate achievement:",
+                response.status
+              );
+            }
+            hasRan = true;
+          } catch (err) {
+            alert("❌ Error generating achievement: " + err.message);
+          }
+        }
+      }
+    };
+
+    checkAchievements();
+  }, []);
 
   return (
     <div className="@container animate-fade-in bg-[url('/images/wallpaperflare.com_wallpaper11.jpg')] overflow-hidden overflow-x-hidden bg-cover bg-no-repeat bg-center h-screen items-center justify-center flex flex-col space-y-10 ">
-      <button className="absolute bottom-0 task-button h-15 !w-50">
+      <button
+        onClick={() => {
+          setAchievementLayout(!achievementLayout);
+        }}
+        className="absolute bottom-0 task-button h-15 !w-50"
+      >
         {" "}
         <h1>Achivements.</h1> <p className="text-black/40">(coming soon)</p>
       </button>
@@ -59,6 +95,16 @@ function Points() {
         </span>
         {/* <Circle /> */}
       </div>
+      {achievementLayout && (
+        <div
+          className="fixed inset-0.5 w-full h-full bg-black/50 flex items-center justify-center mt-10"
+          onClick={() => {
+            setAchievementLayout(!achievementLayout);
+          }}
+        >
+          <Achievements userData={userData} />
+        </div>
+      )}
     </div>
   );
 }
