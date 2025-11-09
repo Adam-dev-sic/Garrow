@@ -67,7 +67,7 @@ function Points() {
         className="absolute bottom-0 task-button h-15 !w-50"
       >
         {" "}
-        <h1>Achivements.</h1> <p className="text-black/40">(coming soon)</p>
+        <h1>Achivements</h1>
       </button>
       <h1 className="mt-30 villain-title text-center">
         Points: {userData?.totalpoints}

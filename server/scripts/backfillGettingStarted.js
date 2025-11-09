@@ -26,7 +26,7 @@ try {
     }
   }
   const PeopleILove = await prisma.user.findFirst({
-    where: { email: "ademyak2006@gmail.com@gmail.com" },
+    where: { email: "ademyak2006@gmail.com" },
   });
   const existingAchiev = await prisma.achievements.findFirst({
     where: { userId: PeopleILove.id, title: "The Secret Achievement" },
