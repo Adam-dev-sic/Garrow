@@ -8,6 +8,7 @@ import Done from "./Done";
 import { handleLoadingList } from "../utils/handleLoadingList";
 import { handleSavingList } from "../utils/handleSavingList";
 import { handleDeteteListTask } from "../utils/handleDeteteListTask";
+import { toast } from "react-toastify";
 
 export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -219,7 +220,18 @@ export default function Monthly({ monthlyOpen, setMonthlyOpen }) {
                   if (listId) {
                     fetchUserData();
                     setOverlayOpen(true);
-                  } else alert("Choose a list first");
+                  } else toast.warn('Select a list first!', {
+position: "top-center",
+autoClose: 5000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "dark",
+
+});
+
                 }}
                 className="block px-4 py-2 text-white hover:bg-gray-600"
               >

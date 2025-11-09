@@ -4,6 +4,7 @@ import Weekly from "../components/Weekly";
 import Monthly from "../components/Monthly";
 import Yearly from "../components/Yearly";
 import { useUserStore } from "../store/useUserStore";
+import Tutorial from "../components/Tutorial";
 
 function ParticleBackground() {
   const canvasRef = useRef(null);
@@ -66,6 +67,8 @@ function Tasks() {
   const [weeklyOpen, setWeeklyOpen] = useState(false);
   const [monthlyOpen, setMonthlyOpen] = useState(false);
   const [yearlyOpen, setYearlyOpen] = useState(false);
+  const [tutorialModal, setTutorialModal] = useState(false);
+
   const tasksRef = useRef(null);
 
   useEffect(() => {
@@ -80,89 +83,120 @@ function Tasks() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   return (
-    <div className="relative animate-fade-in @container bg-[url('/images/wallpaperflare.com_wallpaper.jpg')] bg-cover bg-no-repeat bg-center h-screen flex flex-col space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
-      <ParticleBackground />
-      <div className="flex space-x-10 mt-40 items-center justify-center xl:m-0 xl:mr-80">
-        <button
-          onClick={() => {
-            setDailyOpen(!dailyOpen);
-          }}
-          className="task-button btn-glow"
-        >
-          Daily
-        </button>
-        <button
-          className="task-button btn-glow"
-          onClick={() => {
-            setWeeklyOpen(!weeklyOpen);
-          }}
-        >
-          Weekly
-        </button>
+    <>
+      <div
+        id="tutorial"
+        className={`w-10 h-10 absolute top-25  cursor-pointer right-2 z-1 ${
+          tutorialModal || dailyOpen || weeklyOpen || monthlyOpen || yearlyOpen
+            ? "hidden"
+            : "flex"
+        }`}
+        onClick={() => {
+          setTutorialModal(true);
+        }}
+      >
+        <img src="/images/question.png" className=" w-full h-full" alt="" />
       </div>
-      <div className="flex space-x-10 items-center justify-center xl:m-0">
-        <button
-          className="task-button btn-glow"
-          onClick={() => {
-            setMonthlyOpen(!monthlyOpen);
-          }}
-        >
-          Monthly
-        </button>
-        <button
-          className="task-button btn-glow"
-          onClick={() => {
-            setYearlyOpen(!yearlyOpen);
-          }}
-        >
-          Yearly
-        </button>
+      <div className="relative animate-fade-in @container bg-[url('/images/wallpaperflare.com_wallpaper.jpg')] bg-cover w-full bg-no-repeat bg-center h-screen flex flex-col space-y-10 xl:flex-row xl:space-x-150 xl:justify-center xl:items-center">
+        <ParticleBackground />{" "}
+        <div className="flex space-x-10 mt-40 items-center justify-center xl:m-0 xl:mr-80">
+          <button
+            onClick={() => {
+              setDailyOpen(!dailyOpen);
+            }}
+            className="task-button btn-glow"
+          >
+            Daily
+          </button>
+          <button
+            className="task-button btn-glow"
+            onClick={() => {
+              setWeeklyOpen(!weeklyOpen);
+            }}
+          >
+            Weekly
+          </button>
+        </div>
+        <div className="flex space-x-10 items-center justify-center xl:m-0">
+          <button
+            className="task-button btn-glow"
+            onClick={() => {
+              setMonthlyOpen(!monthlyOpen);
+            }}
+          >
+            Monthly
+          </button>
+          <button
+            className="task-button btn-glow"
+            onClick={() => {
+              setYearlyOpen(!yearlyOpen);
+            }}
+          >
+            Yearly
+          </button>
+        </div>
+        {dailyOpen && (
+          <div
+            ref={tasksRef}
+            className="fixed inset-0.5 bg-black/50  w-full h-full flex items-center justify-center mt-10"
+            onClick={() => {
+              setDailyOpen(!dailyOpen);
+            }}
+          >
+            <Daily dailyOpen={dailyOpen} setDailyOpen={setDailyOpen} />
+          </div>
+        )}
+        {weeklyOpen && (
+          <div
+            ref={tasksRef}
+            onClick={() => {
+              setWeeklyOpen(!weeklyOpen);
+            }}
+            className="fixed inset-0.5 bg-black/50  w-full h-full flex items-center justify-center mt-10"
+          >
+            <Weekly weeklyOpen={weeklyOpen} setWeeklyOpen={setWeeklyOpen} />
+          </div>
+        )}
+        {monthlyOpen && (
+          <div
+            ref={tasksRef}
+            onClick={() => {
+              setMonthlyOpen(!monthlyOpen);
+            }}
+            className="fixed inset-0.5 bg-black/50  w-full h-full flex items-center justify-center mt-10"
+          >
+            <Monthly
+              monthlyOpen={monthlyOpen}
+              setMonthlyOpen={setMonthlyOpen}
+            />
+          </div>
+        )}{" "}
+        {yearlyOpen && (
+          <div
+            ref={tasksRef}
+            onClick={() => {
+              setYearlyOpen(!yearlyOpen);
+            }}
+            className="fixed inset-0.5 bg-black/50 w-full h-full flex items-center justify-center mt-10"
+          >
+            <Yearly yearlyOpen={yearlyOpen} setYearlyOpen={setYearlyOpen} />
+          </div>
+        )}
+        {tutorialModal && (
+          <div
+            ref={tasksRef}
+            className="fixed z-650 inset-0.5 bg-black/50 flex items-center justify-center mt-10"
+            onClick={() => {
+              setTutorialModal(!tutorialModal);
+            }}
+          >
+            <Tutorial />
+          </div>
+        )}
       </div>
-      {dailyOpen && (
-        <div
-          ref={tasksRef}
-          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
-          onClick={() => {
-            setDailyOpen(!dailyOpen);
-          }}
-        >
-          <Daily dailyOpen={dailyOpen} setDailyOpen={setDailyOpen} />
-        </div>
-      )}
-      {weeklyOpen && (
-        <div
-          ref={tasksRef}
-          onClick={() => {
-            setWeeklyOpen(!weeklyOpen);
-          }}
-          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
-        >
-          <Weekly weeklyOpen={weeklyOpen} setWeeklyOpen={setWeeklyOpen} />
-        </div>
-      )}
-      {monthlyOpen && (
-        <div
-          onClick={() => {
-            setMonthlyOpen(!monthlyOpen);
-          }}
-          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
-        >
-          <Monthly monthlyOpen={monthlyOpen} setMonthlyOpen={setMonthlyOpen} />
-        </div>
-      )}{" "}
-      {yearlyOpen && (
-        <div
-          ref={tasksRef}
-          onClick={() => {
-            setYearlyOpen(!yearlyOpen);
-          }}
-          className="fixed inset-0.5 bg-black/50 flex items-center justify-center mt-10"
-        >
-          <Yearly yearlyOpen={yearlyOpen} setYearlyOpen={setYearlyOpen} />
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 

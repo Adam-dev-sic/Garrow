@@ -8,10 +8,10 @@ import Achievements from "../components/Achievements";
 function Points() {
   const { userData, fetchUserData } = useUserStore();
   const [achievementLayout, setAchievementLayout] = useState(false);
-
   const [totalPoints, setTotalPoints] = useState(0);
   const { setTodays, resetTodaysPoints } = useTodaysPoints();
   const [achivementTrigger, setAchivementTrigger] = useState(5000);
+  const [tutorialModal, setTutorialModal] = useState(false);
   // console.log(todaysPoints);
   useEffect(() => {
     if (userData?.dailies?.length) {

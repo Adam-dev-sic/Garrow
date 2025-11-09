@@ -47,6 +47,7 @@ function Linked({
                   // Example: call a function
 
                   setFormLinksIds({ ...formLinksIds, weekly: selectedValue });
+                  if (type === "daily") setFormLinkedPoints(14.29);
                   setFormLinkedPoints(14.29);
                 } else {
                   setFormLinksIds({ ...formLinksIds, weekly: "" });
@@ -109,7 +110,7 @@ function Linked({
                     ...formLinksIds,
                     monthly: selectedValue,
                   });
-                  setFormLinkedPoints(25);
+                  if (type === "weekly") setFormLinkedPoints(25);
                 } else setFormLinksIds({ ...formLinksIds, monthly: "" });
               }}
             >
@@ -166,7 +167,7 @@ function Linked({
                   // Example: call a function
 
                   setFormLinksIds({ ...formLinksIds, yearly: selectedValue });
-                  setFormLinkedPoints(8.3);
+                  if (type === "monthly") setFormLinkedPoints(8.3);
                 } else setFormLinksIds({ ...formLinksIds, yearly: "" });
               }}
             >

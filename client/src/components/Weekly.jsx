@@ -8,6 +8,7 @@ import Done from "./Done";
 import { handleSavingList } from "../utils/handleSavingList.js";
 import { handleLoadingList } from "../utils/handleLoadingList.js";
 import { handleDeteteListTask } from "../utils/handleDeteteListTask.js";
+import { toast } from "react-toastify";
 
 export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
   const [goal, setGoal] = useState(true);
@@ -165,15 +166,29 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
               }
             }}
           >
-            <option value="none">Select List</option>
-            <option value={userData.savedtaskslist[0].id}>
-              {userData.savedtaskslist[0].name}
+            <option className="font-black" value="none">
+              Select List
             </option>
-            <option value={userData.savedtaskslist[1].id}>
-              {userData.savedtaskslist[1].name}
+            <option
+              className="font-black text-xl"
+              value={userData.savedtaskslist[0].id}
+            >
+              {userData.savedtaskslist[0].name.charAt(0).toUpperCase() +
+                userData.savedtaskslist[0].name.slice(1)}
             </option>
-            <option value={userData.savedtaskslist[2].id}>
-              {userData.savedtaskslist[2].name}
+            <option
+              className="font-black text-xl"
+              value={userData.savedtaskslist[1].id}
+            >
+              {userData.savedtaskslist[1].name.charAt(0).toUpperCase() +
+                userData.savedtaskslist[1].name.slice(1)}
+            </option>
+            <option
+              className="font-black text-xl"
+              value={userData.savedtaskslist[2].id}
+            >
+              {userData.savedtaskslist[2].name.charAt(0).toUpperCase() +
+                userData.savedtaskslist[2].name.slice(1)}
             </option>
           </select>
           {/* <button className="next-button !w-35">Save</button> */}
@@ -203,7 +218,18 @@ export default function Weekly({ weeklyOpen, setWeeklyOpen }) {
                   if (listId) {
                     fetchUserData();
                     setOverlayOpen(true);
-                  } else alert("Choose a list first");
+                  } else toast.warn('Select a list first!', {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  
+                  });
+                  
                 }}
                 className="block px-4 py-2 text-white hover:bg-gray-600"
               >

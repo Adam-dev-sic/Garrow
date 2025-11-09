@@ -11,6 +11,14 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
       : type === "monthly"
       ? "monthlies"
       : "yearlies";
+  const progressKey =
+    type === "daily"
+      ? "weeklyProgress"
+      : type === "weekly"
+      ? "monthlyProgress"
+      : type === "monthly"
+      ? "yearlyProgress"
+      : "";
   console.log(listId);
   const iterationValue = userData[iterationKey] || [];
 
@@ -33,7 +41,7 @@ export const handleSavingList = async ({ e, userData, type, listId }) => {
           monthly: task.monthlyUuid || "",
           yearly: task.yearlyUuid || "",
         },
-        linkedProgress: task.linkedProgress || 0,
+        linkedProgress: task[progressKey] || 0,
         points: task.points || 0,
         type: task.type || type,
       };
