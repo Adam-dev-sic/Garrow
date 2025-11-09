@@ -15,7 +15,7 @@ function Home() {
         </p>
         <Link
           className="berserk-button items-center justify-center rounded-full w-40 h-13  text-center text-lg text-white  flex"
-          to={"/tasks"}
+          to={"/goals"}
         >
           Get Started{" "}
         </Link>
