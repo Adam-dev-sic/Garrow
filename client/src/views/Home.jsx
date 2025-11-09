@@ -14,7 +14,7 @@ function Home() {
           The results come to those who stay consistent, not perfect. <br />
         </p>
         <Link
-          className="berserk-button items-center justify-center rounded-full w-40 h-13  text-center text-lg text-white  flex"
+          className="berserk-button items-center justify-center rounded-full w-40 h-13 text-center text-lg text-white  flex"
           to={"/goals"}
         >
           Get Started{" "}
